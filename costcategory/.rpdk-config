@@ -1,0 +1,15 @@
+{
+    "typeName": "AWS::CE::CostCategory",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "software.amazon.ce.costcategory.HandlerWrapper::handleRequest",
+    "testEntrypoint": "software.amazon.ce.costcategory.HandlerWrapper::testEntrypoint",
+    "settings": {
+        "namespace": [
+            "software",
+            "amazon",
+            "ce",
+            "costcategory"
+        ]
+    }
+}
