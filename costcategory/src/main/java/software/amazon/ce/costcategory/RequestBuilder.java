@@ -1,20 +1,18 @@
 package software.amazon.ce.costcategory;
 
-import software.amazon.awssdk.services.costexplorer.model.CreateCostCategoryDefinitionRequest;
-import software.amazon.awssdk.services.costexplorer.model.DeleteCostCategoryDefinitionRequest;
-import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionRequest;
-import software.amazon.awssdk.services.costexplorer.model.ListCostCategoryDefinitionsRequest;
-import software.amazon.awssdk.services.costexplorer.model.UpdateCostCategoryDefinitionRequest;
+import lombok.experimental.UtilityClass;
+import software.amazon.awssdk.services.costexplorer.model.*;
 
 /**
  * Build API request based on resource model.
  */
+@UtilityClass
 public class RequestBuilder {
     public static CreateCostCategoryDefinitionRequest buildCreateRequest(ResourceModel model) {
         return CreateCostCategoryDefinitionRequest.builder()
                 .name(model.getName())
                 .ruleVersion(model.getRuleVersion())
-                .rules(Converter.fromJson(model.getRules()))
+                .rules(RulesParser.fromJson(model.getRules()))
                 .build();
     }
 
@@ -22,7 +20,7 @@ public class RequestBuilder {
         return UpdateCostCategoryDefinitionRequest.builder()
                 .costCategoryArn(model.getArn())
                 .ruleVersion(model.getRuleVersion())
-                .rules(Converter.fromJson(model.getRules()))
+                .rules(RulesParser.fromJson(model.getRules()))
                 .build();
     }
 

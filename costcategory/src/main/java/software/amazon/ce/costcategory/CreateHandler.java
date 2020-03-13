@@ -14,10 +14,11 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         final Logger logger) {
 
         final ResourceModel model = request.getDesiredResourceState();
+        final CostExplorerClient client = CostExplorerClient.create();
 
         CreateCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
                 RequestBuilder.buildCreateRequest(model),
-                CostExplorerClient.builder().build()::createCostCategoryDefinition
+                client::createCostCategoryDefinition
         );
 
         model.setArn(response.costCategoryArn());

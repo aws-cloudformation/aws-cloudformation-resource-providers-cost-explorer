@@ -16,9 +16,11 @@ public class ListHandler extends BaseHandler<CallbackContext> {
         final CallbackContext callbackContext,
         final Logger logger) {
 
+        final CostExplorerClient client = CostExplorerClient.create();
+
         ListCostCategoryDefinitionsResponse response = proxy.injectCredentialsAndInvokeV2(
                 RequestBuilder.buildListRequest(request.getNextToken()),
-                CostExplorerClient.builder().build()::listCostCategoryDefinitions
+                client::listCostCategoryDefinitions
         );
 
         List<ResourceModel> models = response.costCategoryReferences().stream()
