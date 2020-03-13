@@ -11,7 +11,7 @@ class ReadHandlerTest extends HandlerSpecification {
 
     def handler = new ReadHandler()
 
-    def "Test: handleRequest"() {
+    def "Test: ReadHandler.handleRequest"() {
         given:
         def describeResponse = DescribeCostCategoryDefinitionResponse.builder()
             .costCategory(CostCategory.builder()

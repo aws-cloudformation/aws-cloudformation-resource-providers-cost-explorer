@@ -5,6 +5,10 @@ import software.amazon.awssdk.services.costexplorer.model.CostCategory;
 import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionResponse;
 import software.amazon.cloudformation.proxy.*;
 
+/**
+ * CloudFormation invokes this handler as part of a stack update operation
+ * when detailed information about the resource's current state is required.
+ */
 public class ReadHandler extends BaseHandler<CallbackContext> {
 
     @Override
@@ -18,7 +22,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         final CostExplorerClient client = CostExplorerClient.create();
 
         DescribeCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildDescribeRequest(model),
+                CostCategoryRequestBuilder.buildDescribeRequest(model),
                 client::describeCostCategoryDefinition
         );
 
@@ -26,7 +30,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         model.setName(costCategory.name());
         model.setEffectiveStart(costCategory.effectiveStart());
         model.setRuleVersion(costCategory.ruleVersionAsString());
-        model.setRules(RulesParser.toJson(costCategory.rules()));
+        model.setRules(CostCategoryRulesParser.toJson(costCategory.rules()));
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)

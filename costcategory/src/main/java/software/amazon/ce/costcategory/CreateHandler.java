@@ -4,6 +4,9 @@ import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateCostCategoryDefinitionResponse;
 import software.amazon.cloudformation.proxy.*;
 
+/**
+ * CloudFormation invokes this handler when the resource is initially created during stack create operations.
+ */
 public class CreateHandler extends BaseHandler<CallbackContext> {
 
     @Override
@@ -17,7 +20,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         final CostExplorerClient client = CostExplorerClient.create();
 
         CreateCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildCreateRequest(model),
+                CostCategoryRequestBuilder.buildCreateRequest(model),
                 client::createCostCategoryDefinition
         );
 

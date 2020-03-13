@@ -7,12 +7,12 @@ import spock.lang.Unroll
 
 import static software.amazon.ce.costcategory.Fixtures.*
 
-class RulesParserTest extends Specification {
+class CostCategoryRulesParserTest extends Specification {
 
     @Unroll
     def "Test: toJson for #rule -> #expectedJson"(String expectedJson, CostCategoryRule rule) {
         when:
-        def jsonArray = RulesParser.toJson([rule])
+        def jsonArray = CostCategoryRulesParser.toJson([rule])
 
         then:
         jsonArray == "[ ${expectedJson} ]"
@@ -30,7 +30,7 @@ class RulesParserTest extends Specification {
     @Unroll
     def "Test: fromJson for #json -> #expectedRule"(String json, CostCategoryRule expectedRule) {
         when:
-        def rules = RulesParser.fromJson("[ ${json} ]")
+        def rules = CostCategoryRulesParser.fromJson("[ ${json} ]")
 
         then:
         rules == [expectedRule]
@@ -50,7 +50,7 @@ class RulesParserTest extends Specification {
         def json = '''invalid_json'''
 
         when:
-        RulesParser.fromJson(json)
+        CostCategoryRulesParser.fromJson(json)
 
         then:
         def ex = thrown(CfnInvalidRequestException)
@@ -66,7 +66,7 @@ class RulesParserTest extends Specification {
 }
 ]'''
         when:
-        RulesParser.fromJson(json)
+        CostCategoryRulesParser.fromJson(json)
 
         then:
         def ex = thrown(CfnInvalidRequestException)

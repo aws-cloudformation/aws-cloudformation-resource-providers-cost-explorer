@@ -7,6 +7,9 @@ import software.amazon.cloudformation.proxy.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * CloudFormation invokes this handler when summary information about multiple resources of this resource provider is required.
+ */
 public class ListHandler extends BaseHandler<CallbackContext> {
 
     @Override
@@ -19,7 +22,7 @@ public class ListHandler extends BaseHandler<CallbackContext> {
         final CostExplorerClient client = CostExplorerClient.create();
 
         ListCostCategoryDefinitionsResponse response = proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildListRequest(request.getNextToken()),
+                CostCategoryRequestBuilder.buildListRequest(request.getNextToken()),
                 client::listCostCategoryDefinitions
         );
 

@@ -1,13 +1,15 @@
 package software.amazon.ce.costcategory;
 
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
-import software.amazon.awssdk.services.costexplorer.model.UpdateCostCategoryDefinitionRequest;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
+/**
+ * CloudFormation invokes this handler when the resource is updated as part of a stack update operation.
+ */
 public class UpdateHandler extends BaseHandler<CallbackContext> {
 
     @Override
@@ -20,7 +22,7 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
         final ResourceModel model = request.getDesiredResourceState();
 
         proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildUpdateRequest(model),
+                CostCategoryRequestBuilder.buildUpdateRequest(model),
                 CostExplorerClient.builder().build()::updateCostCategoryDefinition
         );
 

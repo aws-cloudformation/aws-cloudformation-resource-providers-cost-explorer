@@ -3,6 +3,10 @@ package software.amazon.ce.costcategory;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.cloudformation.proxy.*;
 
+/**
+ * CloudFormation invokes this handler when the resource is deleted,
+ * either when the resource is deleted from the stack as part of a stack update operation, or the stack itself is deleted.
+ */
 public class DeleteHandler extends BaseHandler<CallbackContext> {
 
     @Override
@@ -16,7 +20,7 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         final CostExplorerClient client = CostExplorerClient.create();
 
         proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildDeleteRequest(model),
+                CostCategoryRequestBuilder.buildDeleteRequest(model),
                 client::deleteCostCategoryDefinition
         );
 

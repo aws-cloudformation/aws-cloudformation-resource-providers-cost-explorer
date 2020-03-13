@@ -7,12 +7,12 @@ import software.amazon.awssdk.services.costexplorer.model.*;
  * Build API request based on resource model.
  */
 @UtilityClass
-public class RequestBuilder {
+public class CostCategoryRequestBuilder {
     public static CreateCostCategoryDefinitionRequest buildCreateRequest(ResourceModel model) {
         return CreateCostCategoryDefinitionRequest.builder()
                 .name(model.getName())
                 .ruleVersion(model.getRuleVersion())
-                .rules(RulesParser.fromJson(model.getRules()))
+                .rules(CostCategoryRulesParser.fromJson(model.getRules()))
                 .build();
     }
 
@@ -20,7 +20,7 @@ public class RequestBuilder {
         return UpdateCostCategoryDefinitionRequest.builder()
                 .costCategoryArn(model.getArn())
                 .ruleVersion(model.getRuleVersion())
-                .rules(RulesParser.fromJson(model.getRules()))
+                .rules(CostCategoryRulesParser.fromJson(model.getRules()))
                 .build();
     }
 

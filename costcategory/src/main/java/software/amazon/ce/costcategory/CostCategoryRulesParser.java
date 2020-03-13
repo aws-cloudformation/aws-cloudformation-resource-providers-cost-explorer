@@ -14,7 +14,7 @@ import java.util.*;
  * Parser between JSON array string and list of {@link CostCategoryRule}.
  */
 @UtilityClass
-public class RulesParser {
+public class CostCategoryRulesParser {
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static ObjectWriter objectWriter;
 
