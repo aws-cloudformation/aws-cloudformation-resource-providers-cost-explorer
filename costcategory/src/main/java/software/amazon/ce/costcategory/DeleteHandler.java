@@ -1,6 +1,7 @@
 package software.amazon.ce.costcategory;
 
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
+import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
 import software.amazon.cloudformation.proxy.*;
 
 /**
@@ -19,10 +20,14 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         final ResourceModel model = request.getDesiredResourceState();
         final CostExplorerClient client = CostExplorerClient.create();
 
-        proxy.injectCredentialsAndInvokeV2(
-                CostCategoryRequestBuilder.buildDeleteRequest(model),
-                client::deleteCostCategoryDefinition
-        );
+        try {
+            proxy.injectCredentialsAndInvokeV2(
+                    CostCategoryRequestBuilder.buildDeleteRequest(model),
+                    client::deleteCostCategoryDefinition
+            );
+        } catch (ResourceNotFoundException ex) {
+            // If resource has already been deleted outside stack, skip deletion and mark it success.
+        }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)

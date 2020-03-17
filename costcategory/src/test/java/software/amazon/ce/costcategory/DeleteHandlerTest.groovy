@@ -2,6 +2,7 @@ package software.amazon.ce.costcategory
 
 import software.amazon.awssdk.services.costexplorer.model.DeleteCostCategoryDefinitionRequest
 import software.amazon.awssdk.services.costexplorer.model.DeleteCostCategoryDefinitionResponse
+import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException
 import software.amazon.cloudformation.proxy.OperationStatus
 
 import static software.amazon.ce.costcategory.Fixtures.*
@@ -26,6 +27,25 @@ class DeleteHandlerTest extends HandlerSpecification {
             deleteRequest.costCategoryArn() == model.arn
             deleteResponse
         }
+
+        event.status == OperationStatus.SUCCESS
+        event.resourceModel == model
+    }
+
+    def "Test: handleRequest success when resource has already been deleted"() {
+        given:
+        def model = ResourceModel.builder()
+                .arn(COST_CATEGORY_ARN)
+                .build()
+        proxy.injectCredentialsAndInvokeV2(*_) >> { DeleteCostCategoryDefinitionRequest r, _ ->
+            throw ResourceNotFoundException.builder().build()
+        }
+
+        when:
+        def event = handler.handleRequest(proxy, request, callbackContext, logger)
+
+        then:
+        1 * request.getDesiredResourceState() >> model
 
         event.status == OperationStatus.SUCCESS
         event.resourceModel == model
