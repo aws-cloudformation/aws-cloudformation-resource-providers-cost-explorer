@@ -27,6 +27,7 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
             );
         } catch (ResourceNotFoundException ex) {
             // If resource has already been deleted outside stack, skip deletion and mark it success.
+            logger.log(String.format("Cost category %s does not exist, skip deletion.", model.getArn()));
         }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
