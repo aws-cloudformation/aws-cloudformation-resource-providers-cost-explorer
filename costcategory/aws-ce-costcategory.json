@@ -20,9 +20,6 @@
         "EffectiveStart": {
             "$ref": "#/definitions/ZonedDateTime"
         },
-        "EffectiveEnd": {
-            "$ref": "#/definitions/ZonedDateTime"
-        },
         "Name": {
             "type": "string",
             "minLength": 1,
@@ -47,8 +44,7 @@
     ],
     "readOnlyProperties": [
         "/properties/Arn",
-        "/properties/EffectiveStart",
-        "/properties/EffectiveEnd"
+        "/properties/EffectiveStart"
     ],
     "createOnlyProperties": [
         "/properties/Name"
