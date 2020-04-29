@@ -1,13 +1,16 @@
 package software.amazon.ce.costcategory;
 
-import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateCostCategoryDefinitionResponse;
-import software.amazon.cloudformation.proxy.*;
+import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.Logger;
+import software.amazon.cloudformation.proxy.OperationStatus;
+import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 /**
  * CloudFormation invokes this handler when the resource is initially created during stack create operations.
  */
-public class CreateHandler extends BaseHandler<CallbackContext> {
+public class CreateHandler extends CostCategoryBaseHandler {
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
@@ -17,11 +20,10 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         final Logger logger) {
 
         final ResourceModel model = request.getDesiredResourceState();
-        final CostExplorerClient client = CostExplorerClient.create();
 
         CreateCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
                 CostCategoryRequestBuilder.buildCreateRequest(model),
-                client::createCostCategoryDefinition
+                costExplorerClient::createCostCategoryDefinition
         );
 
         model.setArn(response.costCategoryArn());
