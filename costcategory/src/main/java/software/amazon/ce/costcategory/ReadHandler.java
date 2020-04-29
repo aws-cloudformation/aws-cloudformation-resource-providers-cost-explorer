@@ -1,15 +1,18 @@
 package software.amazon.ce.costcategory;
 
-import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CostCategory;
 import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionResponse;
-import software.amazon.cloudformation.proxy.*;
+import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.Logger;
+import software.amazon.cloudformation.proxy.OperationStatus;
+import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 /**
  * CloudFormation invokes this handler as part of a stack update operation
  * when detailed information about the resource's current state is required.
  */
-public class ReadHandler extends BaseHandler<CallbackContext> {
+public class ReadHandler extends CostCategoryBaseHandler {
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
@@ -19,11 +22,10 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         final Logger logger) {
 
         final ResourceModel model = request.getDesiredResourceState();
-        final CostExplorerClient client = CostExplorerClient.create();
 
         DescribeCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
                 CostCategoryRequestBuilder.buildDescribeRequest(model),
-                client::describeCostCategoryDefinition
+                costExplorerClient::describeCostCategoryDefinition
         );
 
         CostCategory costCategory = response.costCategory();

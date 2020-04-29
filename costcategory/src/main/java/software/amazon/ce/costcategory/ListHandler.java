@@ -1,8 +1,11 @@
 package software.amazon.ce.costcategory;
 
-import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.ListCostCategoryDefinitionsResponse;
-import software.amazon.cloudformation.proxy.*;
+import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.Logger;
+import software.amazon.cloudformation.proxy.OperationStatus;
+import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * CloudFormation invokes this handler when summary information about multiple resources of this resource provider is required.
  */
-public class ListHandler extends BaseHandler<CallbackContext> {
+public class ListHandler extends CostCategoryBaseHandler {
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
@@ -19,11 +22,9 @@ public class ListHandler extends BaseHandler<CallbackContext> {
         final CallbackContext callbackContext,
         final Logger logger) {
 
-        final CostExplorerClient client = CostExplorerClient.create();
-
         ListCostCategoryDefinitionsResponse response = proxy.injectCredentialsAndInvokeV2(
                 CostCategoryRequestBuilder.buildListRequest(request.getNextToken()),
-                client::listCostCategoryDefinitions
+                costExplorerClient::listCostCategoryDefinitions
         );
 
         List<ResourceModel> models = response.costCategoryReferences().stream()
