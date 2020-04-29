@@ -26,20 +26,18 @@
     </repositories>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/costexplorer -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>costexplorer</artifactId>
+            <version>2.13.4</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/software.amazon.cloudformation/aws-cloudformation-rpdk-java-plugin -->
         <dependency>
             <groupId>software.amazon.cloudformation</groupId>
             <artifactId>aws-cloudformation-rpdk-java-plugin</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/costexplorer
-        Use private build local jar, we can switch to public one once the sdk has been released.
-        -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>costexplorer</artifactId>
-            <version>2.12.0</version>
+            <version>1.0.3</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
