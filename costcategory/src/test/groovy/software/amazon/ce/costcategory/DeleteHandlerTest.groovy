@@ -3,6 +3,7 @@ package software.amazon.ce.costcategory
 import software.amazon.awssdk.services.costexplorer.model.DeleteCostCategoryDefinitionRequest
 import software.amazon.awssdk.services.costexplorer.model.DeleteCostCategoryDefinitionResponse
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException
+import software.amazon.cloudformation.exceptions.CfnNotFoundException
 import software.amazon.cloudformation.proxy.OperationStatus
 
 import static software.amazon.ce.costcategory.Fixtures.*
@@ -29,7 +30,7 @@ class DeleteHandlerTest extends HandlerSpecification {
         }
 
         event.status == OperationStatus.SUCCESS
-        event.resourceModel == model
+        event.resourceModel == null
     }
 
     def "Test: handleRequest success when resource has already been deleted"() {
@@ -42,12 +43,10 @@ class DeleteHandlerTest extends HandlerSpecification {
         }
 
         when:
-        def event = handler.handleRequest(proxy, request, callbackContext, logger)
+        handler.handleRequest(proxy, request, callbackContext, logger)
 
         then:
         1 * request.getDesiredResourceState() >> model
-
-        event.status == OperationStatus.SUCCESS
-        event.resourceModel == model
+        thrown CfnNotFoundException
     }
 }
