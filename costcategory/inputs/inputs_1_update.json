@@ -1,0 +1,4 @@
+{
+  "RuleVersion": "CostCategoryExpression.v1",
+  "Rules": "[ {\n  \"Value\" : \"Dev\",\n  \"Rule\" : {\n    \"Dimensions\" : {\n      \"Key\" : \"LINKED_ACCOUNT\",\n      \"Values\" : [ \"123456789012\" ]\n    }\n  }\n} ]"
+}

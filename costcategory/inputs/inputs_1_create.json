@@ -1,0 +1,5 @@
+{
+  "Name": "ContractTestCC",
+  "RuleVersion": "CostCategoryExpression.v1",
+  "Rules": "[ {\n  \"Value\" : \"Engineering\",\n  \"Rule\" : {\n    \"Dimensions\" : {\n      \"Key\" : \"LINKED_ACCOUNT\",\n      \"Values\" : [ \"123456789012\" ]\n    }\n  }\n} ]"
+}

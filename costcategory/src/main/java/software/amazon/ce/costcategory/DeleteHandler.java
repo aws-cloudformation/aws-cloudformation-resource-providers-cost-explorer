@@ -1,6 +1,7 @@
 package software.amazon.ce.costcategory;
 
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
+import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
@@ -28,12 +29,10 @@ public class DeleteHandler extends CostCategoryBaseHandler {
                     costExplorerClient::deleteCostCategoryDefinition
             );
         } catch (ResourceNotFoundException ex) {
-            // If resource has already been deleted outside stack, skip deletion and mark it success.
-            logger.log(String.format("Cost category %s does not exist, skip deletion.", model.getArn()));
+            throw new CfnNotFoundException(ex);
         }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
-            .resourceModel(model)
             .status(OperationStatus.SUCCESS)
             .build();
     }

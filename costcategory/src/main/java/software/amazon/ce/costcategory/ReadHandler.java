@@ -2,6 +2,8 @@ package software.amazon.ce.costcategory;
 
 import software.amazon.awssdk.services.costexplorer.model.CostCategory;
 import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionResponse;
+import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
+import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
@@ -23,20 +25,24 @@ public class ReadHandler extends CostCategoryBaseHandler {
 
         final ResourceModel model = request.getDesiredResourceState();
 
-        DescribeCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
-                CostCategoryRequestBuilder.buildDescribeRequest(model),
-                costExplorerClient::describeCostCategoryDefinition
-        );
+        try {
+            DescribeCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
+                    CostCategoryRequestBuilder.buildDescribeRequest(model),
+                    costExplorerClient::describeCostCategoryDefinition
+            );
 
-        CostCategory costCategory = response.costCategory();
-        model.setName(costCategory.name());
-        model.setEffectiveStart(costCategory.effectiveStart());
-        model.setRuleVersion(costCategory.ruleVersionAsString());
-        model.setRules(CostCategoryRulesParser.toJson(costCategory.rules()));
+            CostCategory costCategory = response.costCategory();
+            model.setName(costCategory.name());
+            model.setEffectiveStart(costCategory.effectiveStart());
+            model.setRuleVersion(costCategory.ruleVersionAsString());
+            model.setRules(CostCategoryRulesParser.toJson(costCategory.rules()));
 
-        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-            .resourceModel(model)
-            .status(OperationStatus.SUCCESS)
-            .build();
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                    .resourceModel(model)
+                    .status(OperationStatus.SUCCESS)
+                    .build();
+        } catch (ResourceNotFoundException ex) {
+            throw new CfnNotFoundException(ex);
+        }
     }
 }

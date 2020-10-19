@@ -1,5 +1,7 @@
 package software.amazon.ce.costcategory;
 
+import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
+import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
@@ -20,14 +22,18 @@ public class UpdateHandler extends CostCategoryBaseHandler {
 
         final ResourceModel model = request.getDesiredResourceState();
 
-        proxy.injectCredentialsAndInvokeV2(
-                CostCategoryRequestBuilder.buildUpdateRequest(model),
-                costExplorerClient::updateCostCategoryDefinition
-        );
+        try {
+            proxy.injectCredentialsAndInvokeV2(
+                    CostCategoryRequestBuilder.buildUpdateRequest(model),
+                    costExplorerClient::updateCostCategoryDefinition
+            );
 
-        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-            .resourceModel(model)
-            .status(OperationStatus.SUCCESS)
-            .build();
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                    .resourceModel(model)
+                    .status(OperationStatus.SUCCESS)
+                    .build();
+        } catch (ResourceNotFoundException ex) {
+            throw new CfnNotFoundException(ex);
+        }
     }
 }
