@@ -16,6 +16,7 @@ out/
 # auto-generated files
 target/
 .hypothesis
+docs/README.md
 
 # our logs
 rpdk.log
