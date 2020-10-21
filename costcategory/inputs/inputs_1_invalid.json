@@ -1,4 +1,5 @@
 {
+  "Arn": "arn:aws:ce::494077034435:costcategory/123",
   "Name": "ContractTestCC",
   "RuleVersion": "CostCategoryExpression.v1",
   "Rules": ""
