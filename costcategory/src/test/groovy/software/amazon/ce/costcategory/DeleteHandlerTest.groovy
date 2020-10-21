@@ -33,7 +33,7 @@ class DeleteHandlerTest extends HandlerSpecification {
         event.resourceModel == null
     }
 
-    def "Test: handleRequest success when resource has already been deleted"() {
+    def "Test: handleRequest throws CfnNotFoundException when resource has already been deleted"() {
         given:
         def model = ResourceModel.builder()
                 .arn(COST_CATEGORY_ARN)
