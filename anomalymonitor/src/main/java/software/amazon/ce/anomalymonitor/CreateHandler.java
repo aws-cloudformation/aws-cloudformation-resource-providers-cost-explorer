@@ -37,7 +37,7 @@ public class CreateHandler extends AnomalyMonitorBaseHandler {
                 RequestBuilder.buildCreateAnomalyMonitorRequest(model),
                 costExplorerClient::createAnomalyMonitor
         );
-        System.out.println("----response----: " + response);
+
         model.setMonitorArn(response.monitorArn());
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
