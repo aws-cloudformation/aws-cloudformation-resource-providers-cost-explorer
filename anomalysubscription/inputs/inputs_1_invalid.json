@@ -1,0 +1,13 @@
+{
+  "SubscriptionName": "ContractTestSubscriptionName",
+  "SubscriptionArn": "arn:aws:ce::313025035011:anomalysubscription/d79c551d-ea6b-4b90-8a9e-e5c40dc3b491",
+  "Threshold": 1,
+  "MonitorArnList": [],
+  "Subscribers": [
+    {
+      "Address": "araphn@amazon.com",
+      "Type": "EMAIL"
+    }
+  ],
+  "Frequency": "DAILY"
+}
