@@ -1,6 +1,6 @@
 {
   "typeName": "AWS::CE::AnomalySubscription",
-  "description": "AWS Cost Anomaly Detection leverages advanced Machine Learning technologies to identify anomalous spend and root causes, so you can quickly take action. After or during creation of monitor you can create alert subscription to be notified when anomalies are detected.",
+  "description": "AWS Cost Anomaly Detection leverages advanced Machine Learning technologies to identify anomalous spend and root causes, so you can quickly take action. Create subscription to be notified",
   "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-rpdk.git",
   "definitions": {
     "Arn": {
