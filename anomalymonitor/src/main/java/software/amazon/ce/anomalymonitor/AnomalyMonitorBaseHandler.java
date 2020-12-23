@@ -8,7 +8,7 @@ import software.amazon.awssdk.utils.AttributeMap;
 import java.time.Duration;
 
 public abstract class AnomalyMonitorBaseHandler extends BaseHandler<CallbackContext> {
-    
+
     private static final Duration HTTP_READ_TIMEOUT = Duration.ofSeconds(65);
 
     protected final CostExplorerClient costExplorerClient;

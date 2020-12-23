@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.google.common.collect.ImmutableMap;
+
 import lombok.experimental.UtilityClass;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class Utils {
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static ObjectWriter objectWriter;
-    
+
     static {
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
@@ -55,7 +56,7 @@ public class Utils {
         });
         objectWriter = OBJECT_MAPPER.writerWithDefaultPrettyPrinter();
     }
-    
+
     public static Expression toExpresionFromJson(String expressionJson) {
         try {
             return OBJECT_MAPPER.readValue(expressionJson, Expression.class);

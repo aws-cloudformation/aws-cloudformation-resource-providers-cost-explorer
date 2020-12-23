@@ -1,6 +1,6 @@
 # AWS::CE::AnomalySubscription
 
-AWS Cost Anomaly Detection leverages advanced Machine Learning technologies to identify anomalous spend and root causes, so you can quickly take action. After or during creation of monitor you can create alert subscription to be notified when anomalies are detected.
+AWS Cost Anomaly Detection leverages advanced Machine Learning technologies to identify anomalous spend and root causes, so you can quickly take action. Create subscription to be notified
 
 ## Syntax
 
@@ -116,4 +116,3 @@ The accountId
 #### Status
 
 Returns the <code>Status</code> value.
-
