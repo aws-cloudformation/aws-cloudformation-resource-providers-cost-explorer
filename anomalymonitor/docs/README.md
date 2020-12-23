@@ -112,4 +112,3 @@ The date when the monitor was last updated.
 #### DimensionalValueCount
 
 The value for evaluated dimensions.
-

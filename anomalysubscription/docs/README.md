@@ -116,4 +116,3 @@ The accountId
 #### Status
 
 Returns the <code>Status</code> value.
-
