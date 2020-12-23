@@ -1,0 +1,5 @@
+{
+  "MonitorName": "ContractTestMonitorName",
+  "MonitorType": "DIMENSIONAL",
+  "MonitorDimension": "SERVICE"
+}
