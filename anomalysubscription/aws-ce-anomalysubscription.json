@@ -33,7 +33,8 @@
       "required": [
         "Address",
         "Type"
-      ]
+      ],
+      "additionalProperties": false
     }
   },
   "properties": {
@@ -95,7 +96,7 @@
   "readOnlyProperties": [
     "/properties/SubscriptionArn",
     "/properties/AccountId",
-    "/definitions/Subscriber/Status"
+    "/properties/Subscribers/*/Status"
   ],
   "primaryIdentifier": [
     "/properties/SubscriptionArn"
