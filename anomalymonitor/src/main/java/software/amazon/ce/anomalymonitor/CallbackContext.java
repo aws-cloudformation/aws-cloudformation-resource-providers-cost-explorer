@@ -1,8 +1,8 @@
 package software.amazon.ce.anomalymonitor;
 
 import lombok.Builder;
-        import lombok.Data;
-        import lombok.NoArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * The CallbackContext will hold details about the current state of the execution.
