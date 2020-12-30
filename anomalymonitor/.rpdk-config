@@ -6,11 +6,6 @@
     "entrypoint": "software.amazon.ce.anomalymonitor.HandlerWrapper::handleRequest",
     "testEntrypoint": "software.amazon.ce.anomalymonitor.HandlerWrapper::testEntrypoint",
     "settings": {
-        "version": false,
-        "subparser_name": null,
-        "verbose": 0,
-        "force": false,
-        "type_name": null,
         "namespace": [
             "software",
             "amazon",
