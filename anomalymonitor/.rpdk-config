@@ -1,16 +1,10 @@
 {
-    "artifact_type": "RESOURCE",
     "typeName": "AWS::CE::AnomalyMonitor",
     "language": "java",
     "runtime": "java8",
     "entrypoint": "software.amazon.ce.anomalymonitor.HandlerWrapper::handleRequest",
     "testEntrypoint": "software.amazon.ce.anomalymonitor.HandlerWrapper::testEntrypoint",
     "settings": {
-        "version": false,
-        "subparser_name": null,
-        "verbose": 0,
-        "force": false,
-        "type_name": null,
         "namespace": [
             "software",
             "amazon",
@@ -19,6 +13,5 @@
         ],
         "codegen_template_path": "default",
         "protocolVersion": "2.0.0"
-    },
-    "executableEntrypoint": "software.amazon.ce.anomalymonitor.HandlerWrapperExecutable"
+    }
 }
