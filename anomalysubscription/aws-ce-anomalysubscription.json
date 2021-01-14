@@ -114,7 +114,7 @@
     },
     "update": {
       "permissions": [
-        "ce:UpdateAnomalySubscriptions"
+        "ce:UpdateAnomalySubscription"
       ]
     },
     "delete": {
