@@ -26,7 +26,7 @@ Resources:
                 - "ce:CreateAnomalySubscription"
                 - "ce:DeleteAnomalySubscription"
                 - "ce:GetAnomalySubscriptions"
-                - "ce:UpdateAnomalySubscriptions"
+                - "ce:UpdateAnomalySubscription"
                 Resource: "*"
 Outputs:
   ExecutionRoleArn:
