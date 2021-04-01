@@ -37,7 +37,7 @@ class ListHandlerTest extends HandlerSpecification {
         1 * request.getNextToken() >> nextToken
 
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { ListCostCategoryDefinitionsRequest listRequest, _ ->
-            listRequest.nextToken() == nextToken
+            assert listRequest.nextToken() == nextToken
             listResponse
         }
 

@@ -21,6 +21,7 @@ class CreateHandlerTest extends HandlerSpecification {
                 .name(COST_CATEGORY_NAME)
                 .ruleVersion(RULE_VERSION)
                 .rules("[ ${JSON_RULE_DIMENSION} ]")
+                .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
                 .build()
 
         when:
@@ -29,10 +30,10 @@ class CreateHandlerTest extends HandlerSpecification {
         then:
         1 * request.getDesiredResourceState() >> model
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { CreateCostCategoryDefinitionRequest createRequest, _ ->
-            createRequest.name() == model.name
-            createRequest.ruleVersionAsString() == model.ruleVersion
-            createRequest.rules() == [ RULE_DIMENSION ]
-
+            assert createRequest.name() == model.name
+            assert createRequest.ruleVersionAsString() == model.ruleVersion
+            assert createRequest.rules() == [ RULE_DIMENSION ]
+            assert createRequest.defaultValue() == COST_CATEGORY_DEFAULT_VALUE
             createResponse
         }
 

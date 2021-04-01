@@ -16,6 +16,7 @@ class Fixtures {
 
     static final COST_CATEGORY_EFFECTIVE_START = "2019-05-01T00:00:00Z"
 
+    static final COST_CATEGORY_DEFAULT_VALUE = "DefaultValue"
 
     static final JSON_RULE_DIMENSION = '''{
   "Value" : "Dimension",

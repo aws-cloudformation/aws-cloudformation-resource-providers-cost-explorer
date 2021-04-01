@@ -33,7 +33,7 @@ class ReadHandlerTest extends HandlerSpecification {
         then:
         1 * request.getDesiredResourceState() >> model
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { DescribeCostCategoryDefinitionRequest describeRequest, _ ->
-            describeRequest.costCategoryArn() == model.arn
+            assert describeRequest.costCategoryArn() == model.arn
             describeResponse
         }
 

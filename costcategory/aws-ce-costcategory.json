@@ -23,7 +23,7 @@
     "Name": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 255
+      "maxLength": 50
     },
     "RuleVersion": {
       "type": "string",
@@ -34,6 +34,12 @@
     "Rules": {
       "type": "string",
       "description": "JSON array format of Expression in Billing and Cost Management API"
+    },
+    "DefaultValue": {
+      "type": "string",
+      "description": "The default value for the cost category",
+      "minLength": 1,
+      "maxLength": 50
     }
   },
   "additionalProperties": false,
