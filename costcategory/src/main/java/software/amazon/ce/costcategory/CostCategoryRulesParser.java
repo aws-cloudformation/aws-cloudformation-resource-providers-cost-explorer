@@ -39,13 +39,15 @@ public class CostCategoryRulesParser {
 
         // SDK model has no default constructor, and build class is private.
         // Add custom builder so Jackson can deserialize the class.
-        final Map<Class<?>, Class<?>> buildersMap = ImmutableMap.of(
-                CostCategoryRule.class, CostCategoryRule.serializableBuilderClass(),
-                Expression.class, Expression.serializableBuilderClass(),
-                DimensionValues.class, DimensionValues.serializableBuilderClass(),
-                TagValues.class, TagValues.serializableBuilderClass(),
-                CostCategoryValues.class, CostCategoryValues.serializableBuilderClass()
-        );
+        final Map<Class<?>, Class<?>> buildersMap = ImmutableMap.<Class<?>, Class<?>>builder()
+                .put(CostCategoryRule.class, CostCategoryRule.serializableBuilderClass())
+                .put(Expression.class, Expression.serializableBuilderClass())
+                .put(DimensionValues.class, DimensionValues.serializableBuilderClass())
+                .put(TagValues.class, TagValues.serializableBuilderClass())
+                .put(CostCategoryValues.class, CostCategoryValues.serializableBuilderClass())
+                .put(CostCategoryInheritedValueDimension.class, CostCategoryInheritedValueDimension.serializableBuilderClass())
+                .build();
+
         OBJECT_MAPPER.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
             private static final long serialVersionUID = 1L;
 

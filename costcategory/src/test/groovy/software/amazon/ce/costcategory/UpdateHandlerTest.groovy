@@ -34,6 +34,7 @@ class UpdateHandlerTest extends HandlerSpecification {
             assert updateRequest.costCategoryArn() == COST_CATEGORY_ARN
             assert updateRequest.ruleVersionAsString() == RULE_VERSION
             assert updateRequest.rules() == [ RULE_DIMENSION ]
+            assert updateRequest.defaultValue() == COST_CATEGORY_DEFAULT_VALUE
 
             updateResponse
         }
