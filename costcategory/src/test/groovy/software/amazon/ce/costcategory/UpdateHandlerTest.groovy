@@ -18,9 +18,11 @@ class UpdateHandlerTest extends HandlerSpecification {
             .build()
 
         def model = ResourceModel.builder()
+            .arn(COST_CATEGORY_ARN)
             .name(COST_CATEGORY_NAME)
             .ruleVersion(RULE_VERSION)
             .rules("[ ${JSON_RULE_DIMENSION} ]")
+            .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
             .build()
 
         when:
@@ -29,9 +31,10 @@ class UpdateHandlerTest extends HandlerSpecification {
         then:
         1 * request.getDesiredResourceState() >> model
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { UpdateCostCategoryDefinitionRequest updateRequest, _ ->
-            updateRequest.costCategoryArn() == COST_CATEGORY_ARN
-            updateRequest.ruleVersionAsString() == RULE_VERSION
-            updateRequest.rules() == [ RULE_DIMENSION ]
+            assert updateRequest.costCategoryArn() == COST_CATEGORY_ARN
+            assert updateRequest.ruleVersionAsString() == RULE_VERSION
+            assert updateRequest.rules() == [ RULE_DIMENSION ]
+            assert updateRequest.defaultValue() == COST_CATEGORY_DEFAULT_VALUE
 
             updateResponse
         }

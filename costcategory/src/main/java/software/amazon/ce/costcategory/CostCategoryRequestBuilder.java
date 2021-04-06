@@ -13,6 +13,7 @@ public class CostCategoryRequestBuilder {
                 .name(model.getName())
                 .ruleVersion(model.getRuleVersion())
                 .rules(CostCategoryRulesParser.fromJson(model.getRules()))
+                .defaultValue(model.getDefaultValue())
                 .build();
     }
 
@@ -21,6 +22,7 @@ public class CostCategoryRequestBuilder {
                 .costCategoryArn(model.getArn())
                 .ruleVersion(model.getRuleVersion())
                 .rules(CostCategoryRulesParser.fromJson(model.getRules()))
+                .defaultValue(model.getDefaultValue())
                 .build();
     }
 

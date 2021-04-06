@@ -1,5 +1,6 @@
 package software.amazon.ce.costcategory
 
+import software.amazon.awssdk.services.costexplorer.model.CostCategoryInheritedValueDimension
 import software.amazon.awssdk.services.costexplorer.model.CostCategoryRule
 import software.amazon.awssdk.services.costexplorer.model.CostCategoryValues
 import software.amazon.awssdk.services.costexplorer.model.DimensionValues
@@ -16,6 +17,7 @@ class Fixtures {
 
     static final COST_CATEGORY_EFFECTIVE_START = "2019-05-01T00:00:00Z"
 
+    static final COST_CATEGORY_DEFAULT_VALUE = "DefaultValue"
 
     static final JSON_RULE_DIMENSION = '''{
   "Value" : "Dimension",
@@ -150,4 +152,19 @@ class Fixtures {
     static final CostCategoryRule RULE_NOT = CostCategoryRule.builder()
             .value("Not")
             .rule(EXPRESSION_NOT).build()
+
+    static final String JSON_RULE_INHERITED_VALUE = '''{
+  "InheritedValue" : {
+    "DimensionName" : "TAG",
+    "DimensionKey" : "DevUsage"
+  },
+  "Type" : "INHERITED_VALUE"
+}'''
+
+    static final CostCategoryInheritedValueDimension INHERITED_VALUE_DIMENSION = CostCategoryInheritedValueDimension.builder()
+            .dimensionName("TAG").dimensionKey("DevUsage").build();
+
+    static final CostCategoryRule RULE_INHERITED_VALUE = CostCategoryRule.builder()
+            .type("INHERITED_VALUE").inheritedValue(INHERITED_VALUE_DIMENSION).build();
+
 }

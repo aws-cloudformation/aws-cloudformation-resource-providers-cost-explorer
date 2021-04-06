@@ -25,7 +25,7 @@ class DeleteHandlerTest extends HandlerSpecification {
         then:
         1 * request.getDesiredResourceState() >> model
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { DeleteCostCategoryDefinitionRequest deleteRequest, _  ->
-            deleteRequest.costCategoryArn() == model.arn
+            assert deleteRequest.costCategoryArn() == model.arn
             deleteResponse
         }
 

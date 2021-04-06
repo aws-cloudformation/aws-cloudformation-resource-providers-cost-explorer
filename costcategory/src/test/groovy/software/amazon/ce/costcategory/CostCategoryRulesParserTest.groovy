@@ -18,13 +18,14 @@ class CostCategoryRulesParserTest extends Specification {
         jsonArray == "[ ${expectedJson} ]"
 
         where:
-        expectedJson            | rule
-        JSON_RULE_DIMENSION     | RULE_DIMENSION
-        JSON_RULE_TAG           | RULE_TAG
-        JSON_RULE_COST_CATEGORY | RULE_COST_CATEGORY
-        JSON_RULE_AND           | RULE_AND
-        JSON_RULE_OR            | RULE_OR
-        JSON_RULE_NOT           | RULE_NOT
+        expectedJson              | rule
+        JSON_RULE_DIMENSION       | RULE_DIMENSION
+        JSON_RULE_TAG             | RULE_TAG
+        JSON_RULE_COST_CATEGORY   | RULE_COST_CATEGORY
+        JSON_RULE_AND             | RULE_AND
+        JSON_RULE_OR              | RULE_OR
+        JSON_RULE_NOT             | RULE_NOT
+        JSON_RULE_INHERITED_VALUE | RULE_INHERITED_VALUE
     }
 
     @Unroll
@@ -36,13 +37,14 @@ class CostCategoryRulesParserTest extends Specification {
         rules == [expectedRule]
 
         where:
-        json                    | expectedRule
-        JSON_RULE_DIMENSION     | RULE_DIMENSION
-        JSON_RULE_TAG           | RULE_TAG
-        JSON_RULE_COST_CATEGORY | RULE_COST_CATEGORY
-        JSON_RULE_AND           | RULE_AND
-        JSON_RULE_OR            | RULE_OR
-        JSON_RULE_NOT           | RULE_NOT
+        json                      | expectedRule
+        JSON_RULE_DIMENSION       | RULE_DIMENSION
+        JSON_RULE_TAG             | RULE_TAG
+        JSON_RULE_COST_CATEGORY   | RULE_COST_CATEGORY
+        JSON_RULE_AND             | RULE_AND
+        JSON_RULE_OR              | RULE_OR
+        JSON_RULE_NOT             | RULE_NOT
+        JSON_RULE_INHERITED_VALUE | RULE_INHERITED_VALUE
     }
 
     def "Test: fromJson for invalid json"() {
