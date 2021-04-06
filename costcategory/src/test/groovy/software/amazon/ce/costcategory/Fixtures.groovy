@@ -154,11 +154,11 @@ class Fixtures {
             .rule(EXPRESSION_NOT).build()
 
     static final String JSON_RULE_INHERITED_VALUE = '''{
-  "Type" : "INHERITED_VALUE",
   "InheritedValue" : {
-      "DimensionName" : "TAG",
-      "DimensionKey" : "DevUsage"
-  }
+    "DimensionName" : "TAG",
+    "DimensionKey" : "DevUsage"
+  },
+  "Type" : "INHERITED_VALUE"
 }'''
 
     static final CostCategoryInheritedValueDimension INHERITED_VALUE_DIMENSION = CostCategoryInheritedValueDimension.builder()
