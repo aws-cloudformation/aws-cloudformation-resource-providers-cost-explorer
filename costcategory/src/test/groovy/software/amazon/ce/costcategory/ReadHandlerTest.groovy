@@ -20,6 +20,7 @@ class ReadHandlerTest extends HandlerSpecification {
                     .effectiveStart(COST_CATEGORY_EFFECTIVE_START)
                     .ruleVersion(RULE_VERSION)
                     .rules([ RULE_DIMENSION ])
+                    .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
                     .build()
             ).build()
 
@@ -41,6 +42,7 @@ class ReadHandlerTest extends HandlerSpecification {
         model.effectiveStart == COST_CATEGORY_EFFECTIVE_START
         model.ruleVersion == RULE_VERSION
         model.rules == "[ ${JSON_RULE_DIMENSION} ]"
+        model.defaultValue == COST_CATEGORY_DEFAULT_VALUE
 
         event.resourceModel == model
         event.status == OperationStatus.SUCCESS

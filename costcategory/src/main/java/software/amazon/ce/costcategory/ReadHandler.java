@@ -36,6 +36,7 @@ public class ReadHandler extends CostCategoryBaseHandler {
             model.setEffectiveStart(costCategory.effectiveStart());
             model.setRuleVersion(costCategory.ruleVersionAsString());
             model.setRules(CostCategoryRulesParser.toJson(costCategory.rules()));
+            model.setDefaultValue(costCategory.defaultValue());
 
             return ProgressEvent.<ResourceModel, CallbackContext>builder()
                     .resourceModel(model)
