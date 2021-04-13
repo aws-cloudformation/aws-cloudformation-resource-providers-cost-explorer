@@ -1,5 +1,6 @@
 package software.amazon.ce.costcategory;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.ListCostCategoryDefinitionsResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -14,6 +15,14 @@ import java.util.stream.Collectors;
  * CloudFormation invokes this handler when summary information about multiple resources of this resource provider is required.
  */
 public class ListHandler extends CostCategoryBaseHandler {
+
+    public ListHandler() {
+        super();
+    }
+
+    public ListHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(

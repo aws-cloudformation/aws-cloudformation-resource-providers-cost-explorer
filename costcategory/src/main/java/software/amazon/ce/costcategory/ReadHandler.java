@@ -1,5 +1,6 @@
 package software.amazon.ce.costcategory;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CostCategory;
 import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionResponse;
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
@@ -15,6 +16,14 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
  * when detailed information about the resource's current state is required.
  */
 public class ReadHandler extends CostCategoryBaseHandler {
+
+    public ReadHandler() {
+        super();
+    }
+
+    public ReadHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
@@ -36,6 +45,7 @@ public class ReadHandler extends CostCategoryBaseHandler {
             model.setEffectiveStart(costCategory.effectiveStart());
             model.setRuleVersion(costCategory.ruleVersionAsString());
             model.setRules(CostCategoryRulesParser.toJson(costCategory.rules()));
+            model.setDefaultValue(costCategory.defaultValue());
 
             return ProgressEvent.<ResourceModel, CallbackContext>builder()
                     .resourceModel(model)

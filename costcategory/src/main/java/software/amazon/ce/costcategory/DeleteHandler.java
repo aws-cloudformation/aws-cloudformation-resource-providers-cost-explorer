@@ -1,5 +1,6 @@
 package software.amazon.ce.costcategory;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -13,6 +14,14 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
  * either when the resource is deleted from the stack as part of a stack update operation, or the stack itself is deleted.
  */
 public class DeleteHandler extends CostCategoryBaseHandler {
+
+    public DeleteHandler() {
+        super();
+    }
+
+    public DeleteHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(

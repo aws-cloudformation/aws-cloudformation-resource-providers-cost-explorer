@@ -1,5 +1,6 @@
 package software.amazon.ce.costcategory;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -12,6 +13,14 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
  * CloudFormation invokes this handler when the resource is updated as part of a stack update operation.
  */
 public class UpdateHandler extends CostCategoryBaseHandler {
+
+    public UpdateHandler() {
+        super();
+    }
+
+    public UpdateHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
