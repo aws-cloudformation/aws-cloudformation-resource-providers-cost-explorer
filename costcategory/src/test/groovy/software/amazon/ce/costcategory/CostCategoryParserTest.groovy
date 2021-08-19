@@ -92,10 +92,17 @@ class CostCategoryParserTest extends Specification {
 
         where:
         expectedJson                        | rule
-        null                                | null
         JSON_SPLIT_CHARGE_RULE_PROPORTIONAL | SPLIT_CHARGE_RULE_PROPORTIONAL
         JSON_SPLIT_CHARGE_RULE_EVEN         | SPLIT_CHARGE_RULE_EVEN
         JSON_SPLIT_CHARGE_RULE_FIXED        | SPLIT_CHARGE_RULE_FIXED
+    }
+
+    def "Test: costCategorySplitChargeRulesToJson when input is null"() {
+        when:
+        def jsonArray = CostCategoryParser.costCategorySplitChargeRulesToJson(null)
+
+        then:
+        jsonArray == null
     }
 
     @Unroll
@@ -108,10 +115,17 @@ class CostCategoryParserTest extends Specification {
 
         where:
         json                                | expectedRule
-        null                                | null
         JSON_SPLIT_CHARGE_RULE_PROPORTIONAL | SPLIT_CHARGE_RULE_PROPORTIONAL
         JSON_SPLIT_CHARGE_RULE_EVEN         | SPLIT_CHARGE_RULE_EVEN
         JSON_SPLIT_CHARGE_RULE_FIXED        | SPLIT_CHARGE_RULE_FIXED
+    }
+
+    def "Test: costCategorySplitChargeRulesFromJson when input is null"() {
+        when:
+        def rules = CostCategoryParser.costCategorySplitChargeRulesFromJson(null)
+
+        then:
+        rules == null
     }
 
     def "Test: costCategorySplitChargeRulesFromJson for invalid json"() {
