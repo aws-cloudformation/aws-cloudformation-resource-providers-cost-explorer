@@ -2,6 +2,10 @@ package software.amazon.ce.costcategory
 
 import software.amazon.awssdk.services.costexplorer.model.CostCategoryInheritedValueDimension
 import software.amazon.awssdk.services.costexplorer.model.CostCategoryRule
+import software.amazon.awssdk.services.costexplorer.model.CostCategorySplitChargeMethod
+import software.amazon.awssdk.services.costexplorer.model.CostCategorySplitChargeRule
+import software.amazon.awssdk.services.costexplorer.model.CostCategorySplitChargeRuleParameter
+import software.amazon.awssdk.services.costexplorer.model.CostCategorySplitChargeRuleParameterType
 import software.amazon.awssdk.services.costexplorer.model.CostCategoryValues
 import software.amazon.awssdk.services.costexplorer.model.DimensionValues
 import software.amazon.awssdk.services.costexplorer.model.Expression
@@ -167,4 +171,36 @@ class Fixtures {
     static final CostCategoryRule RULE_INHERITED_VALUE = CostCategoryRule.builder()
             .type("INHERITED_VALUE").inheritedValue(INHERITED_VALUE_DIMENSION).build();
 
+    static final CostCategorySplitChargeRule SPLIT_CHARGE_RULE_PROPORTIONAL = CostCategorySplitChargeRule.builder()
+            .source("Source").targets("Target1", "Target2").method(CostCategorySplitChargeMethod.PROPORTIONAL).build();
+
+    static final CostCategorySplitChargeRule SPLIT_CHARGE_RULE_EVEN = CostCategorySplitChargeRule.builder()
+            .source("Source").targets("Target1", "Target2").method(CostCategorySplitChargeMethod.EVEN).build();
+
+    static final CostCategorySplitChargeRule SPLIT_CHARGE_RULE_FIXED = CostCategorySplitChargeRule.builder()
+            .source("Source").targets("Target1", "Target2").method(CostCategorySplitChargeMethod.FIXED)
+            .parameters(CostCategorySplitChargeRuleParameter.builder().type(CostCategorySplitChargeRuleParameterType.ALLOCATION_PERCENTAGES)
+                    .values("80", "20").build()).build();
+
+    static final String JSON_SPLIT_CHARGE_RULE_PROPORTIONAL = '''{
+  "Source" : "Source",
+  "Targets" : [ "Target1", "Target2" ],
+  "Method" : "PROPORTIONAL"
+}''';
+
+    static final String JSON_SPLIT_CHARGE_RULE_EVEN = '''{
+  "Source" : "Source",
+  "Targets" : [ "Target1", "Target2" ],
+  "Method" : "EVEN"
+}''';
+
+    static final String JSON_SPLIT_CHARGE_RULE_FIXED = '''{
+  "Source" : "Source",
+  "Targets" : [ "Target1", "Target2" ],
+  "Method" : "FIXED",
+  "Parameters" : [ {
+    "Type" : "ALLOCATION_PERCENTAGES",
+    "Values" : [ "80", "20" ]
+  } ]
+}''';
 }

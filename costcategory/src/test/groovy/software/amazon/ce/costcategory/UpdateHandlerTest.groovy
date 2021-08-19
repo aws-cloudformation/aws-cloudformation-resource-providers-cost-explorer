@@ -22,6 +22,7 @@ class UpdateHandlerTest extends HandlerSpecification {
             .name(COST_CATEGORY_NAME)
             .ruleVersion(RULE_VERSION)
             .rules("[ ${JSON_RULE_DIMENSION} ]")
+            .splitChargeRules("[${JSON_SPLIT_CHARGE_RULE_FIXED}, ${JSON_SPLIT_CHARGE_RULE_PROPORTIONAL}, ${JSON_SPLIT_CHARGE_RULE_EVEN}]")
             .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
             .build()
 
@@ -34,6 +35,7 @@ class UpdateHandlerTest extends HandlerSpecification {
             assert updateRequest.costCategoryArn() == COST_CATEGORY_ARN
             assert updateRequest.ruleVersionAsString() == RULE_VERSION
             assert updateRequest.rules() == [ RULE_DIMENSION ]
+            assert updateRequest.splitChargeRules() == [SPLIT_CHARGE_RULE_FIXED, SPLIT_CHARGE_RULE_PROPORTIONAL, SPLIT_CHARGE_RULE_EVEN]
             assert updateRequest.defaultValue() == COST_CATEGORY_DEFAULT_VALUE
 
             updateResponse
