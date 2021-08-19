@@ -12,7 +12,8 @@ public class CostCategoryRequestBuilder {
         return CreateCostCategoryDefinitionRequest.builder()
                 .name(model.getName())
                 .ruleVersion(model.getRuleVersion())
-                .rules(CostCategoryRulesParser.fromJson(model.getRules()))
+                .rules(CostCategoryParser.costCategoryRulesFromJson(model.getRules()))
+                .splitChargeRules(CostCategoryParser.costCategorySplitChargeRulesFromJson(model.getSplitChargeRules()))
                 .defaultValue(model.getDefaultValue())
                 .build();
     }
@@ -21,7 +22,8 @@ public class CostCategoryRequestBuilder {
         return UpdateCostCategoryDefinitionRequest.builder()
                 .costCategoryArn(model.getArn())
                 .ruleVersion(model.getRuleVersion())
-                .rules(CostCategoryRulesParser.fromJson(model.getRules()))
+                .rules(CostCategoryParser.costCategoryRulesFromJson(model.getRules()))
+                .splitChargeRules(CostCategoryParser.costCategorySplitChargeRulesFromJson(model.getSplitChargeRules()))
                 .defaultValue(model.getDefaultValue())
                 .build();
     }
