@@ -36,18 +36,18 @@
       ],
       "additionalProperties": false
     },
-    "Tag": {
+    "ResourceTag": {
       "description": "A key-value pair to associate with a resource.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "Key": {
+        "ResourceTagKey": {
           "type": "string",
           "description": "The key name for the tag.",
           "minLength": 1,
           "maxLength": 128
         },
-        "Value": {
+        "ResourceTagValue": {
           "type": "string",
           "description": "The value for the tag.",
           "minLength": 0,
@@ -55,8 +55,8 @@
         }
       },
       "required": [
-        "Key",
-        "Value"
+        "ResourceTagKey",
+        "ResourceTagValue"
       ]
     }
   },
@@ -111,7 +111,7 @@
       "type": "array",
       "description": "Tags to assign to monitor.",
       "items": {
-        "$ref": "#/definitions/Tag"
+        "$ref": "#/definitions/ResourceTag"
       },
       "insertionOrder": false
     }
