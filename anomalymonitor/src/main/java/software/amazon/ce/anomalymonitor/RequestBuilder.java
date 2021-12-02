@@ -18,6 +18,7 @@ public class RequestBuilder {
 
         return CreateAnomalyMonitorRequest.builder()
                 .anomalyMonitor(anomalyMonitor)
+                .resourceTagList(model.getResourceTags())
                 .build();
     }
 
