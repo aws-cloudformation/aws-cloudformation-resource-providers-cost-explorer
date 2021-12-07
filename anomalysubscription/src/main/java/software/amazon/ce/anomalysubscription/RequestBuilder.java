@@ -18,7 +18,7 @@ public class RequestBuilder {
 
         return CreateAnomalySubscriptionRequest.builder()
                 .anomalySubscription(anomalySubscription)
-                .resourceTagList(model.getResourceTags())
+                .resourceTags(ResourceModelTranslator.toSDKResourceTags(model.getResourceTags()))
                 .build();
     }
 

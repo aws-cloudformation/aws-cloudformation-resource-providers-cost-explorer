@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.google.common.collect.ImmutableMap;
 import lombok.experimental.UtilityClass;
 import software.amazon.awssdk.services.costexplorer.model.*;
+import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
 import software.amazon.awssdk.services.costexplorer.model.Subscriber;
 import software.amazon.awssdk.services.costexplorer.model.SubscriberType;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
@@ -48,6 +49,19 @@ public class ResourceModelTranslator {
                     .status(subscriber.getStatus() != null ? subscriber.getStatus().toString() : null)
                     .type(subscriber.getType() != null ? subscriber.getType().toString() : null)
                     .build())
+                .collect(Collectors.toList());
+    }
+
+    public static List<ResourceTag> toSDKResourceTags(List<software.amazon.ce.anomalysubscription.ResourceTag> resourceTags) {
+        if (CollectionUtils.isEmpty(resourceTags)) {
+            return null;
+        }
+
+        return resourceTags.stream().filter(Objects::nonNull).map(
+                resourceTag -> ResourceTag.builder()
+                        .key(resourceTag.getResourceTagKey())
+                        .value(resourceTag.getResourceTagValue())
+                        .build())
                 .collect(Collectors.toList());
     }
 }
