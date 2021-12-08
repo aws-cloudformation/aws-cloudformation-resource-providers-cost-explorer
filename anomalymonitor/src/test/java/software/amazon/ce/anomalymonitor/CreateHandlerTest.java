@@ -73,6 +73,7 @@ public class CreateHandlerTest {
                 .monitorName(TestFixtures.MONITOR_NAME)
                 .monitorType(TestFixtures.MONITOR_TYPE_CUSTOM)
                 .monitorSpecification(TestFixtures.TAGS_MONITOR_SPEC)
+                .resourceTags(TestFixtures.RESOURCE_TAGS)
                 .build();
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
