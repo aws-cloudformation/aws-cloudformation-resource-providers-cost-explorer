@@ -42,6 +42,7 @@ public class CreateHandlerTest {
                 .subscribers(TestFixtures.CFN_MODEL_SUBSCRIBERS)
                 .frequency(TestFixtures.FREQUENCY)
                 .monitorArnList(TestFixtures.MONITOR_ARNS)
+                .resourceTags(TestFixtures.RESOURCE_TAGS)
                 .build();
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
@@ -79,6 +80,7 @@ public class CreateHandlerTest {
                 .frequency(TestFixtures.FREQUENCY)
                 .monitorArnList(TestFixtures.MONITOR_ARNS)
                 .subscriptionArn(TestFixtures.SUBSCRIPTION_ARN)
+                .resourceTags(TestFixtures.RESOURCE_TAGS)
                 .build();
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
