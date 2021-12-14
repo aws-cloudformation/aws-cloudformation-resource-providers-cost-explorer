@@ -1,4 +1,12 @@
 {
   "SubscriptionName": "UpdateContractTestSubscriptionName",
-  "Threshold": 1000
+  "Threshold": 1000,
+  "MonitorArnList": [],
+  "Subscribers": [
+    {
+      "Address": "abc@gmail.com",
+      "Type": "EMAIL"
+    }
+  ],
+  "Frequency": "DAILY"
 }
