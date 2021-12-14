@@ -1,3 +1,4 @@
 {
-  "MonitorName": "UpdateContractTestMonitorName-TAG"
+  "MonitorName": "UpdateContractTestMonitorName-TAG",
+  "MonitorType": "CUSTOM"
 }

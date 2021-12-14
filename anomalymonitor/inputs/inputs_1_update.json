@@ -1,3 +1,4 @@
 {
-  "MonitorName": "UpdateContractTestMonitorName"
+  "MonitorName": "UpdateContractTestMonitorName",
+  "MonitorType": "DIMENSIONAL"
 }
