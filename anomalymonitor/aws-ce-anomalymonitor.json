@@ -13,13 +13,13 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "ResourceTagKey": {
+        "Key": {
           "type": "string",
           "description": "The key name for the tag.",
           "minLength": 1,
           "maxLength": 128
         },
-        "ResourceTagValue": {
+        "Value": {
           "type": "string",
           "description": "The value for the tag.",
           "minLength": 0,
@@ -27,8 +27,8 @@
         }
       },
       "required": [
-        "ResourceTagKey",
-        "ResourceTagValue"
+        "Key",
+        "Value"
       ]
     }
   },
@@ -144,5 +144,12 @@
         "ce:GetAnomalyMonitors"
       ]
     }
+  },
+  "tagging": {
+    "taggable": true,
+    "tagOnCreate": true,
+    "tagUpdatable": false,
+    "cloudFormationSystemTags": false,
+    "tagProperty": "#/properties/ResourceTags"
   }
 }
