@@ -46,8 +46,8 @@ public class ResourceModelTranslator {
 
         return resourceTags.stream().filter(Objects::nonNull).map(
                 resourceTag -> ResourceTag.builder()
-                        .key(resourceTag.getResourceTagKey())
-                        .value(resourceTag.getResourceTagValue())
+                        .key(resourceTag.getKey())
+                        .value(resourceTag.getValue())
                         .build())
                 .collect(Collectors.toList());
     }

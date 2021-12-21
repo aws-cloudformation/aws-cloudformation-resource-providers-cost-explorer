@@ -18,8 +18,8 @@ public class TestFixtures {
     public static String DIMENSION = "SERVICE";
     public static int DIMENSIONAL_VALUE_COUNT = 100;
     public static List<ResourceTag> RESOURCE_TAGS = Arrays.asList(ResourceTag.builder()
-            .resourceTagKey("TestResourceTagKey")
-            .resourceTagValue("TestResourceTagValue")
+            .key("TestResourceTagKey")
+            .value("TestResourceTagValue")
             .build()
         );
 }

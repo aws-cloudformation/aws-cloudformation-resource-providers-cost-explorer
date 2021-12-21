@@ -32,8 +32,8 @@ public class TestFixtures {
             .build();
     public static List<AnomalySubscription> anomalySubscriptions = Arrays.asList(anomalySubscription);
     public static List<ResourceTag> RESOURCE_TAGS = Arrays.asList(ResourceTag.builder()
-            .resourceTagKey("TestResourceTagKey")
-            .resourceTagValue("TestResourceTagValue")
+            .key("TestResourceTagKey")
+            .value("TestResourceTagValue")
             .build()
     );
 }
