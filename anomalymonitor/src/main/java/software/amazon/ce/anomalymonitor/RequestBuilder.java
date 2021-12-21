@@ -1,7 +1,12 @@
 package software.amazon.ce.anomalymonitor;
 
 import lombok.experimental.UtilityClass;
-import software.amazon.awssdk.services.costexplorer.model.*;
+import software.amazon.awssdk.services.costexplorer.model.AnomalyMonitor;
+import software.amazon.awssdk.services.costexplorer.model.Expression;
+import software.amazon.awssdk.services.costexplorer.model.CreateAnomalyMonitorRequest;
+import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalyMonitorRequest;
+import software.amazon.awssdk.services.costexplorer.model.GetAnomalyMonitorsRequest;
+import software.amazon.awssdk.services.costexplorer.model.UpdateAnomalyMonitorRequest;
 
 import java.util.List;
 

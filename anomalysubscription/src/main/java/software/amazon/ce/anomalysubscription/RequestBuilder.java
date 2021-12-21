@@ -1,7 +1,11 @@
 package software.amazon.ce.anomalysubscription;
 
 import lombok.experimental.UtilityClass;
-import software.amazon.awssdk.services.costexplorer.model.*;
+import software.amazon.awssdk.services.costexplorer.model.AnomalySubscription;
+import software.amazon.awssdk.services.costexplorer.model.CreateAnomalySubscriptionRequest;
+import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalySubscriptionRequest;
+import software.amazon.awssdk.services.costexplorer.model.GetAnomalySubscriptionsRequest;
+import software.amazon.awssdk.services.costexplorer.model.UpdateAnomalySubscriptionRequest;
 
 import java.util.List;
 
