@@ -92,6 +92,8 @@
       "items": {
         "$ref": "#/definitions/ResourceTag"
       },
+      "minItems": 0,
+      "maxItems": 200,
       "insertionOrder": false
     }
   },
