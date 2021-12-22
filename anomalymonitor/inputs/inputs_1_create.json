@@ -1,5 +1,6 @@
 {
   "MonitorName": "ContractTestMonitorName",
   "MonitorType": "DIMENSIONAL",
-  "MonitorDimension": "SERVICE"
+  "MonitorDimension": "SERVICE",
+  "ResourceTags": []
 }

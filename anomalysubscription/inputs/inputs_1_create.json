@@ -8,5 +8,6 @@
       "Type": "EMAIL"
     }
   ],
-  "Frequency": "DAILY"
+  "Frequency": "DAILY",
+  "ResourceTags": []
 }
