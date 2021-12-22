@@ -165,7 +165,7 @@
     "taggable": true,
     "tagOnCreate": true,
     "tagUpdatable": false,
-    "cloudFormationSystemTags": false,
+    "cloudFormationSystemTags": true,
     "tagProperty": "#/properties/ResourceTags"
   }
 }
