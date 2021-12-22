@@ -2,5 +2,10 @@
   "MonitorName": "ContractTestMonitorName",
   "MonitorType": "DIMENSIONAL",
   "MonitorDimension": "SERVICE",
-  "ResourceTags": []
+  "ResourceTags": [
+    {
+      "Key": "TestKey",
+      "Value": "TestValue"
+    }
+  ]
 }
