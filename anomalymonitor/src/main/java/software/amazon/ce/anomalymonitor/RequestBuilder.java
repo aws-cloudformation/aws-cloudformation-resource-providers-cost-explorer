@@ -1,7 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.collections.CollectionUtils;
 import software.amazon.awssdk.services.costexplorer.model.AnomalyMonitor;
 import software.amazon.awssdk.services.costexplorer.model.Expression;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalyMonitorRequest;
@@ -11,7 +10,6 @@ import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
 import software.amazon.awssdk.services.costexplorer.model.UpdateAnomalyMonitorRequest;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
@@ -25,16 +23,7 @@ public class RequestBuilder {
                 .monitorSpecification(monitorSpec)
                 .build();
 
-        List<ResourceTag> resourceTags = ResourceModelTranslator.toSDKResourceTags(request.getDesiredResourceTags());
-        List<ResourceTag> systemTags = ResourceModelTranslator.toSDKResourceTags(request.getSystemTags());
-
-        List<ResourceTag> tagList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(resourceTags)) {
-            tagList.addAll(resourceTags);
-        }
-        if (CollectionUtils.isNotEmpty(systemTags)) {
-            tagList.addAll(systemTags);
-        }
+        List<ResourceTag> tagList = ResourceModelTranslator.toSDKResourceTags(TagHelper.generateTagsForCreate(model, request));
 
         return CreateAnomalyMonitorRequest.builder()
                 .anomalyMonitor(anomalyMonitor)
