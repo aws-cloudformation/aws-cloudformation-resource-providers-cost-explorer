@@ -2,10 +2,12 @@ package software.amazon.ce.anomalysubscription;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
 import software.amazon.awssdk.services.costexplorer.model.Subscriber;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -39,16 +41,16 @@ public class ResourceModelTranslator {
                 .collect(Collectors.toList());
     }
 
-    public static List<ResourceTag> toSDKResourceTags(List<software.amazon.ce.anomalysubscription.ResourceTag> resourceTags) {
-        if (CollectionUtils.isEmpty(resourceTags)) {
+    public static List<ResourceTag> toSDKResourceTags(Map<String, String> resourceTags) {
+        if (MapUtils.isEmpty(resourceTags)) {
             return null;
         }
 
-        return resourceTags.stream().filter(Objects::nonNull).map(
-                resourceTag -> ResourceTag.builder()
-                        .key(resourceTag.getKey())
-                        .value(resourceTag.getValue())
-                        .build())
+        return resourceTags.entrySet().stream().filter(Objects::nonNull).map(
+                        resourceTag -> ResourceTag.builder()
+                                .key(resourceTag.getKey())
+                                .value(resourceTag.getValue())
+                                .build())
                 .collect(Collectors.toList());
     }
 }
