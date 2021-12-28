@@ -44,17 +44,16 @@ public class TagHelper {
     public static Map<String, String> generateTagsForCreate(final ResourceModel resourceModel, final ResourceHandlerRequest<ResourceModel> handlerRequest) {
         final Map<String, String> tagMap = new HashMap<>();
 
-        // merge system tags with desired resource tags if your service supports CloudFormation system tags
+        /* TODO Uncomment when system tags are enabled
         if (handlerRequest.getSystemTags() != null) {
             tagMap.putAll(handlerRequest.getSystemTags());
         }
+         */
 
         if (handlerRequest.getDesiredResourceTags() != null) {
             tagMap.putAll(handlerRequest.getDesiredResourceTags());
         }
 
-        // TODO: get tags from resource model based on your tag property name
-        // TODO: tagMap.putAll(convertToMap(resourceModel.getTags()));
         return Collections.unmodifiableMap(tagMap);
     }
 

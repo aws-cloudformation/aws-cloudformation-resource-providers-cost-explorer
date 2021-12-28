@@ -105,7 +105,8 @@
   "createOnlyProperties": [
     "/properties/MonitorType",
     "/properties/MonitorDimension",
-    "/properties/MonitorSpecification"
+    "/properties/MonitorSpecification",
+    "/properties/ResourceTags"
   ],
   "readOnlyProperties": [
     "/properties/MonitorArn",
@@ -144,12 +145,5 @@
         "ce:GetAnomalyMonitors"
       ]
     }
-  },
-  "tagging": {
-    "taggable": true,
-    "tagOnCreate": true,
-    "tagUpdatable": false,
-    "cloudFormationSystemTags": true,
-    "tagProperty": "#/properties/ResourceTags"
   }
 }
