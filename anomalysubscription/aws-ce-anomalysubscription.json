@@ -126,6 +126,9 @@
     "Frequency",
     "SubscriptionName"
   ],
+  "createOnlyProperties": [
+    "/properties/ResourceTags"
+  ],
   "readOnlyProperties": [
     "/properties/SubscriptionArn",
     "/properties/AccountId",
@@ -160,12 +163,5 @@
         "ce:GetAnomalySubscriptions"
       ]
     }
-  },
-  "tagging": {
-    "taggable": true,
-    "tagOnCreate": true,
-    "tagUpdatable": false,
-    "cloudFormationSystemTags": true,
-    "tagProperty": "#/properties/ResourceTags"
   }
 }
