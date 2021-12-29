@@ -9,10 +9,5 @@
     }
   ],
   "Frequency": "DAILY",
-  "ResourceTags": [
-    {
-      "Key": "TestKey",
-      "Value": "TestValue"
-    }
-  ]
+  "ResourceTags": []
 }
