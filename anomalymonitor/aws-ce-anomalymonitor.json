@@ -122,7 +122,8 @@
   "handlers": {
     "create": {
       "permissions": [
-        "ce:CreateAnomalyMonitor"
+        "ce:CreateAnomalyMonitor",
+        "ce:TagResource"
       ]
     },
     "read": {

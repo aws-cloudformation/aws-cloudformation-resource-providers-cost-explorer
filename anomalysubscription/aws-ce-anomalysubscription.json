@@ -140,7 +140,8 @@
   "handlers": {
     "create": {
       "permissions": [
-        "ce:CreateAnomalySubscription"
+        "ce:CreateAnomalySubscription",
+        "ce:TagResource"
       ]
     },
     "read": {
