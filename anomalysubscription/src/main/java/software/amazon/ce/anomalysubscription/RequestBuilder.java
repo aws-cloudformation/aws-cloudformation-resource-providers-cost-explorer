@@ -22,7 +22,7 @@ public class RequestBuilder {
                 .subscribers(ResourceModelTranslator.toSDKSubscribers(model.getSubscribers()))
                 .build();
 
-        List<ResourceTag> tagList = ResourceModelTranslator.toSDKResourceTags(TagHelper.generateTagsForCreate(model, request));
+        List<ResourceTag> tagList = ResourceModelTranslator.toSDKResourceTags(TagHelper.generateTagsForCreate(request));
 
         return CreateAnomalySubscriptionRequest.builder()
                 .anomalySubscription(anomalySubscription)

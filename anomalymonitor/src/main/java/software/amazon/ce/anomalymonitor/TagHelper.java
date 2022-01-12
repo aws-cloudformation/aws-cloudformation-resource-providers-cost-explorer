@@ -41,7 +41,7 @@ public class TagHelper {
      * Generate tags to put into resource creation request.
      * This includes user defined tags and system tags as well.
      */
-    public static Map<String, String> generateTagsForCreate(final ResourceModel resourceModel, final ResourceHandlerRequest<ResourceModel> handlerRequest) {
+    public static Map<String, String> generateTagsForCreate(final ResourceHandlerRequest<ResourceModel> handlerRequest) {
         final Map<String, String> tagMap = new HashMap<>();
 
         /* TODO Uncomment when system tags are enabled

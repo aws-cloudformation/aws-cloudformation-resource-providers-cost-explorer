@@ -23,7 +23,7 @@ public class RequestBuilder {
                 .monitorSpecification(monitorSpec)
                 .build();
 
-        List<ResourceTag> tagList = ResourceModelTranslator.toSDKResourceTags(TagHelper.generateTagsForCreate(model, request));
+        List<ResourceTag> tagList = ResourceModelTranslator.toSDKResourceTags(TagHelper.generateTagsForCreate(request));
 
         return CreateAnomalyMonitorRequest.builder()
                 .anomalyMonitor(anomalyMonitor)
