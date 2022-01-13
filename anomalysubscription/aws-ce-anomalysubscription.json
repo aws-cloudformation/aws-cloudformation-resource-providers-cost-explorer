@@ -50,7 +50,7 @@
         "Value": {
           "type": "string",
           "description": "The value for the tag.",
-          "minLength": 0,
+          "minLength": 1,
           "maxLength": 256
         }
       },
