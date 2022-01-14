@@ -9,6 +9,10 @@ class Configuration extends BaseConfiguration {
         super("aws-ce-anomalymonitor.json");
     }
 
+    /*
+    Overrides the base method to retrieve both stack and resource tags when the getDesiredResourceTags function is called.
+     */
+    @Override
     public Map<String, String> resourceDefinedTags(final ResourceModel resourceModel) {
         if (resourceModel.getResourceTags() == null) {
             return null;
