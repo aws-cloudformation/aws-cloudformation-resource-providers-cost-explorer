@@ -16,6 +16,7 @@
         "Key": {
           "type": "string",
           "description": "The key name for the tag.",
+          "pattern": "^(?!aws:).*$",
           "minLength": 1,
           "maxLength": 128
         },
