@@ -51,7 +51,7 @@
         "Value": {
           "type": "string",
           "description": "The value for the tag.",
-          "minLength": 1,
+          "minLength": 0,
           "maxLength": 256
         }
       },
