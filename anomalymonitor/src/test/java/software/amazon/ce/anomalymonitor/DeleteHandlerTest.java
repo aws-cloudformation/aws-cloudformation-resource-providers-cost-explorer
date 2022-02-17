@@ -10,6 +10,7 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
+@SetEnvironmentVariable(key = "AWS_REGION", value = "us-east-1")
 @ExtendWith(MockitoExtension.class)
 public class DeleteHandlerTest {
 
@@ -66,7 +68,7 @@ public class DeleteHandlerTest {
     }
 
     @Test
-    public void handleRequest_Failurre_Delete() {
+    public void handleRequest_Failure_Delete() {
         final DeleteHandler handler = new DeleteHandler();
 
         final ResourceModel model = ResourceModel.builder()

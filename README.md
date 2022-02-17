@@ -3,6 +3,8 @@
 Current supported resources in [Cost Explorer API](https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/Welcome.html):
 
 - AWS::CE::CostCategory
+- AWS::CE::AnomalyMonitor
+- AWS::CE::AnomalySubscription
 
 ## License
 
