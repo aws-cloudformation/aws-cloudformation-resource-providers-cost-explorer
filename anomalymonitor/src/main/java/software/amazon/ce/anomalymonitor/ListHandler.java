@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -13,6 +14,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ListHandler extends AnomalyMonitorBaseHandler {
+
+    public ListHandler() {
+        super();
+    }
+
+    public ListHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(

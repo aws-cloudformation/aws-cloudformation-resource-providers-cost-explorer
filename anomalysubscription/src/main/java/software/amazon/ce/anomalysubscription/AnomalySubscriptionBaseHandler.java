@@ -32,14 +32,18 @@ public abstract class AnomalySubscriptionBaseHandler extends BaseHandler<Callbac
     );
 
     public AnomalySubscriptionBaseHandler() {
-        AttributeMap httpoptions = AttributeMap.builder()
+        AttributeMap httpOptions = AttributeMap.builder()
                 .put(SdkHttpConfigurationOption.READ_TIMEOUT, HTTP_READ_TIMEOUT)
                 .build();
 
         this.costExplorerClient = CostExplorerClient.builder()
-                .httpClient(new DefaultSdkHttpClientBuilder().buildWithDefaults(httpoptions))
+                .httpClient(new DefaultSdkHttpClientBuilder().buildWithDefaults(httpOptions))
                 .region(partitionToGlobalRegionMap.get(
                         Region.of(System.getenv("AWS_REGION")).metadata().partition().name()))
                 .build();
+    }
+
+    public AnomalySubscriptionBaseHandler(CostExplorerClient costExplorerClient) {
+        this.costExplorerClient = costExplorerClient;
     }
 }

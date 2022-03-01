@@ -42,4 +42,8 @@ public abstract class AnomalyMonitorBaseHandler extends BaseHandler<CallbackCont
                         Region.of(System.getenv("AWS_REGION")).metadata().partition().name()))
                 .build();
     }
+
+    public AnomalyMonitorBaseHandler(CostExplorerClient costExplorerClient) {
+        this.costExplorerClient = costExplorerClient;
+    }
 }

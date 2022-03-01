@@ -9,7 +9,6 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.doReturn;
@@ -18,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
-@SetEnvironmentVariable(key = "AWS_REGION", value = "us-east-1")
 @ExtendWith(MockitoExtension.class)
 public class CreateHandlerTest {
 
@@ -28,6 +26,8 @@ public class CreateHandlerTest {
     @Mock
     private Logger logger;
 
+    private final CreateHandler handler = new CreateHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -36,8 +36,6 @@ public class CreateHandlerTest {
 
     @Test
     public void handleRequest_Success() {
-        final CreateHandler handler = new CreateHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionName(TestFixtures.SUBSCRIPTION_NAME)
                 .threshold(TestFixtures.THRESHOLD)
@@ -72,8 +70,6 @@ public class CreateHandlerTest {
 
     @Test
     public void handleRequest_Fail_UserAssignValuesToReadOnlyProperties() {
-        final CreateHandler handler = new CreateHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionName(TestFixtures.SUBSCRIPTION_NAME)
                 .threshold(TestFixtures.THRESHOLD)

@@ -10,7 +10,6 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
@@ -24,7 +23,6 @@ import static org.mockito.Mockito.doThrow;
 
 import java.util.ArrayList;
 
-@SetEnvironmentVariable(key = "AWS_REGION", value = "us-east-1")
 @ExtendWith(MockitoExtension.class)
 public class ReadHandlerTest {
 
@@ -34,6 +32,8 @@ public class ReadHandlerTest {
     @Mock
     private Logger logger;
 
+    private final ReadHandler handler = new ReadHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -42,8 +42,6 @@ public class ReadHandlerTest {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-        final ReadHandler handler = new ReadHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionArn(TestFixtures.SUBSCRIPTION_ARN)
                 .build();
@@ -74,8 +72,6 @@ public class ReadHandlerTest {
 
     @Test
     public void handleRequest_Failure_Read() {
-        final ReadHandler handler = new ReadHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionArn(TestFixtures.SUBSCRIPTION_ARN)
                 .build();
@@ -100,8 +96,6 @@ public class ReadHandlerTest {
 
     @Test
     public void handleRequest_emptyResponse() {
-        final ReadHandler handler = new ReadHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionArn(TestFixtures.SUBSCRIPTION_ARN)
                 .build();

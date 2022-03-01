@@ -9,7 +9,6 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -22,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.ArgumentMatchers.any;
 
-@SetEnvironmentVariable(key = "AWS_REGION", value = "us-east-1")
 @ExtendWith(MockitoExtension.class)
 public class ReadHandlerTest {
 
@@ -32,6 +30,8 @@ public class ReadHandlerTest {
     @Mock
     private Logger logger;
 
+    private final ReadHandler handler = new ReadHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -40,8 +40,6 @@ public class ReadHandlerTest {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-        final ReadHandler handler = new ReadHandler();
-
         final ResourceModel model = ResourceModel.builder().monitorArn(TestFixtures.MONITOR_ARN).build();
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()

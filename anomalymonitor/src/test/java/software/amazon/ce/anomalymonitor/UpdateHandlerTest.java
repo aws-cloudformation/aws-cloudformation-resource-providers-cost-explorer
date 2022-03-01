@@ -10,7 +10,6 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
@@ -22,7 +21,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 
-@SetEnvironmentVariable(key = "AWS_REGION", value = "us-east-1")
 @ExtendWith(MockitoExtension.class)
 public class UpdateHandlerTest {
 
@@ -32,6 +30,8 @@ public class UpdateHandlerTest {
     @Mock
     private Logger logger;
 
+    private final UpdateHandler handler = new UpdateHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -40,8 +40,6 @@ public class UpdateHandlerTest {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-        final UpdateHandler handler = new UpdateHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .monitorArn(TestFixtures.MONITOR_ARN)
                 .build();
@@ -71,9 +69,7 @@ public class UpdateHandlerTest {
     }
 
     @Test
-    public void handleRequest_Failurre_Delete() {
-        final UpdateHandler handler = new UpdateHandler();
-
+    public void handleRequest_Failure_Delete() {
         final ResourceModel model = ResourceModel.builder()
                 .monitorArn(TestFixtures.MONITOR_ARN)
                 .build();

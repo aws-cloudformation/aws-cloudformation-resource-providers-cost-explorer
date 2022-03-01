@@ -3,6 +3,7 @@ package software.amazon.ce.anomalysubscription;
 // TODO: replace all usage of SdkClient with your service client type, e.g; YourServiceAsyncClient
 // import software.amazon.awssdk.services.yourservice.YourServiceAsyncClient;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -16,6 +17,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ReadHandler extends AnomalySubscriptionBaseHandler {
+
+    public ReadHandler() {
+        super();
+    }
+
+    public ReadHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(

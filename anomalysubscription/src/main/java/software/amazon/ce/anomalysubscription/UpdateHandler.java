@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalysubscription;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.UnknownSubscriptionException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -9,6 +10,14 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 
 public class UpdateHandler extends AnomalySubscriptionBaseHandler {
+
+    public UpdateHandler() {
+        super();
+    }
+
+    public UpdateHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(

@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalyMonitorResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -12,6 +13,14 @@ import software.amazon.cloudformation.proxy.HandlerErrorCode;
  * create: CloudFormation invokes this handler when the resource is initially created during stack create operations.
  * */
 public class CreateHandler extends AnomalyMonitorBaseHandler {
+
+    public CreateHandler() {
+        super();
+    }
+
+    public CreateHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
