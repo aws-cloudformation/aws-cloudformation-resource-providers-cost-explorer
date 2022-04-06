@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.apache.commons.collections.MapUtils;
 import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 public class ResourceModelTranslator {
     public static List<ResourceTag> toSDKResourceTags(Map<String, String> resourceTags) {
         if (MapUtils.isEmpty(resourceTags)) {
-            return null;
+            return Collections.emptyList();
         }
 
         return resourceTags.entrySet().stream().filter(Objects::nonNull).map(
