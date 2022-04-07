@@ -110,7 +110,7 @@
     },
     "ResourceTags": {
       "type": "array",
-      "description": "Tags to assign to monitor.",
+      "description": "Tags to assign to subscription.",
       "items": {
         "$ref": "#/definitions/ResourceTag"
       },
