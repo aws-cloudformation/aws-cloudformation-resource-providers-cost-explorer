@@ -25,6 +25,9 @@ public class ConfigurationTest {
 
         assertThat(resourceDefinedTags).isNotNull();
         assertThat(resourceDefinedTags).hasSameSizeAs(TestFixtures.RESOURCE_TAGS);
+
+        assert resourceDefinedTags.containsKey(TestFixtures.RESOURCE_TAG_KEY);
+        assert resourceDefinedTags.get(TestFixtures.RESOURCE_TAG_KEY).equals(TestFixtures.RESOURCE_TAG_VALUE);
     }
 
     @Test
