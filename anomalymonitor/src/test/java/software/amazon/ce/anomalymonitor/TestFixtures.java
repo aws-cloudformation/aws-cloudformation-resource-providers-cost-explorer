@@ -17,4 +17,11 @@ public class TestFixtures {
     public static String DATE = "2020-11-15T00:00::00Z";
     public static String DIMENSION = "SERVICE";
     public static int DIMENSIONAL_VALUE_COUNT = 100;
+    public static String RESOURCE_TAG_KEY = "TestResourceTagKey";
+    public static String RESOURCE_TAG_VALUE = "TestResourceTagValue";
+    public static List<ResourceTag> RESOURCE_TAGS = Arrays.asList(ResourceTag.builder()
+            .key(RESOURCE_TAG_KEY)
+            .value(RESOURCE_TAG_VALUE)
+            .build()
+        );
 }

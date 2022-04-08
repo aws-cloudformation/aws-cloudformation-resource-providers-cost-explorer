@@ -1,0 +1,12 @@
+{
+  "SubscriptionName": "UpdateContractTestSubscriptionName",
+  "Threshold": 1000,
+  "MonitorArnList": [],
+  "Subscribers": [
+    {
+      "Address": "tstodiec@amazon.com",
+      "Type": "EMAIL"
+    }
+  ],
+  "Frequency": "DAILY"
+}

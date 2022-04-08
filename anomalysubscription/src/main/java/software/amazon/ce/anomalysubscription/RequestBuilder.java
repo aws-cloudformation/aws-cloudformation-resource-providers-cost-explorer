@@ -1,13 +1,19 @@
 package software.amazon.ce.anomalysubscription;
 
 import lombok.experimental.UtilityClass;
-import software.amazon.awssdk.services.costexplorer.model.*;
+import software.amazon.awssdk.services.costexplorer.model.AnomalySubscription;
+import software.amazon.awssdk.services.costexplorer.model.CreateAnomalySubscriptionRequest;
+import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalySubscriptionRequest;
+import software.amazon.awssdk.services.costexplorer.model.GetAnomalySubscriptionsRequest;
+import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
+import software.amazon.awssdk.services.costexplorer.model.UpdateAnomalySubscriptionRequest;
+import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.util.List;
 
 @UtilityClass
 public class RequestBuilder {
-    public static CreateAnomalySubscriptionRequest buildCreateAnomalySubscriptionRequest(ResourceModel model) {
+    public static CreateAnomalySubscriptionRequest buildCreateAnomalySubscriptionRequest(ResourceModel model, ResourceHandlerRequest<ResourceModel> request) {
         AnomalySubscription anomalySubscription = AnomalySubscription.builder()
                 .subscriptionName(model.getSubscriptionName())
                 .threshold(model.getThreshold())
@@ -16,8 +22,11 @@ public class RequestBuilder {
                 .subscribers(ResourceModelTranslator.toSDKSubscribers(model.getSubscribers()))
                 .build();
 
+        List<ResourceTag> tagList = ResourceModelTranslator.toSDKResourceTags(TagHelper.generateTagsForCreate(request));
+
         return CreateAnomalySubscriptionRequest.builder()
                 .anomalySubscription(anomalySubscription)
+                .resourceTags(tagList)
                 .build();
     }
 

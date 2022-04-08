@@ -26,6 +26,7 @@ Resources:
                 - "ce:CreateAnomalyMonitor"
                 - "ce:DeleteAnomalyMonitor"
                 - "ce:GetAnomalyMonitors"
+                - "ce:TagResource"
                 - "ce:UpdateAnomalyMonitor"
                 Resource: "*"
 Outputs:

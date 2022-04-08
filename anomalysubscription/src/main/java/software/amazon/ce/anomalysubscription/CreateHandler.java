@@ -31,7 +31,7 @@ public class CreateHandler extends AnomalySubscriptionBaseHandler {
                     .build();
         }
         CreateAnomalySubscriptionResponse response = proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildCreateAnomalySubscriptionRequest(model),
+                RequestBuilder.buildCreateAnomalySubscriptionRequest(model, request),
                 costExplorerClient::createAnomalySubscription
         );
 

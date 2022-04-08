@@ -69,6 +69,43 @@ public class CreateHandlerTest {
     }
 
     @Test
+    public void handleRequest_Success_tagsSubscription() {
+        final CreateHandler handler = new CreateHandler();
+
+        final ResourceModel model = ResourceModel.builder()
+                .subscriptionName(TestFixtures.SUBSCRIPTION_NAME)
+                .threshold(TestFixtures.THRESHOLD)
+                .subscribers(TestFixtures.CFN_MODEL_SUBSCRIBERS)
+                .frequency(TestFixtures.FREQUENCY)
+                .monitorArnList(TestFixtures.MONITOR_ARNS)
+                .resourceTags(TestFixtures.RESOURCE_TAGS)
+                .build();
+
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+        final CreateAnomalySubscriptionResponse mockResponse = CreateAnomalySubscriptionResponse.builder()
+                .subscriptionArn(TestFixtures.SUBSCRIPTION_ARN)
+                .build();
+
+        doReturn(mockResponse)
+                .when(proxy).injectCredentialsAndInvokeV2(any(), any());
+
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, null, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
+        assertThat(response.getCallbackContext()).isNull();
+        assertThat(response.getCallbackDelaySeconds()).isEqualTo(0);
+        assertThat(response.getResourceModel()).isEqualTo(request.getDesiredResourceState());
+        assertThat(response.getResourceModels()).isNull();
+        assertThat(response.getMessage()).isNull();
+        assertThat(response.getErrorCode()).isNull();
+    }
+
+    @Test
     public void handleRequest_Fail_UserAssignValuesToReadOnlyProperties() {
         final CreateHandler handler = new CreateHandler();
 
@@ -79,6 +116,7 @@ public class CreateHandlerTest {
                 .frequency(TestFixtures.FREQUENCY)
                 .monitorArnList(TestFixtures.MONITOR_ARNS)
                 .subscriptionArn(TestFixtures.SUBSCRIPTION_ARN)
+                .resourceTags(TestFixtures.RESOURCE_TAGS)
                 .build();
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()

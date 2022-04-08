@@ -1,21 +1,12 @@
 package software.amazon.ce.anomalysubscription;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.google.common.collect.ImmutableMap;
 import lombok.experimental.UtilityClass;
-import software.amazon.awssdk.services.costexplorer.model.*;
-import software.amazon.awssdk.services.costexplorer.model.Subscriber;
-import software.amazon.awssdk.services.costexplorer.model.SubscriberType;
-import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
+import software.amazon.awssdk.services.costexplorer.model.Subscriber;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -48,6 +39,19 @@ public class ResourceModelTranslator {
                     .status(subscriber.getStatus() != null ? subscriber.getStatus().toString() : null)
                     .type(subscriber.getType() != null ? subscriber.getType().toString() : null)
                     .build())
+                .collect(Collectors.toList());
+    }
+
+    public static List<ResourceTag> toSDKResourceTags(Map<String, String> resourceTags) {
+        if (MapUtils.isEmpty(resourceTags)) {
+            return Collections.emptyList();
+        }
+
+        return resourceTags.entrySet().stream().filter(Objects::nonNull).map(
+                        resourceTag -> ResourceTag.builder()
+                                .key(resourceTag.getKey())
+                                .value(resourceTag.getValue())
+                                .build())
                 .collect(Collectors.toList());
     }
 }

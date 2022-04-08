@@ -26,6 +26,7 @@ Resources:
                 - "ce:CreateAnomalySubscription"
                 - "ce:DeleteAnomalySubscription"
                 - "ce:GetAnomalySubscriptions"
+                - "ce:TagResource"
                 - "ce:UpdateAnomalySubscription"
                 Resource: "*"
 Outputs:
