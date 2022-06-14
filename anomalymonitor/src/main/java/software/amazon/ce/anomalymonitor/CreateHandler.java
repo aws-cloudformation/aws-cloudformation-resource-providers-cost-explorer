@@ -43,7 +43,7 @@ public class CreateHandler extends AnomalyMonitorBaseHandler {
                     .build();
         }
         CreateAnomalyMonitorResponse response = proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildCreateAnomalyMonitorRequest(model),
+                RequestBuilder.buildCreateAnomalyMonitorRequest(model, request),
                 costExplorerClient::createAnomalyMonitor
         );
 
