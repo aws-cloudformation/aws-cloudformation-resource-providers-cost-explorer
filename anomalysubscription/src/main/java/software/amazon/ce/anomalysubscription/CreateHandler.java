@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalysubscription;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalySubscriptionResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -10,6 +11,15 @@ import software.amazon.cloudformation.proxy.HandlerErrorCode;
 
 
 public class CreateHandler extends AnomalySubscriptionBaseHandler {
+
+    public CreateHandler() {
+        super();
+    }
+
+    public CreateHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
+
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
             final AmazonWebServicesClientProxy proxy,

@@ -30,6 +30,8 @@ public class ReadHandlerTest {
     @Mock
     private Logger logger;
 
+    private final ReadHandler handler = new ReadHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -38,8 +40,6 @@ public class ReadHandlerTest {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-        final ReadHandler handler = new ReadHandler();
-
         final ResourceModel model = ResourceModel.builder().monitorArn(TestFixtures.MONITOR_ARN).build();
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()

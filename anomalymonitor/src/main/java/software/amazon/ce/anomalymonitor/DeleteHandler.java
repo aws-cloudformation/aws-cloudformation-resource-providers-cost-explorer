@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.UnknownMonitorException;
 import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalyMonitorResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -7,10 +8,17 @@ import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
-import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 
 public class DeleteHandler extends AnomalyMonitorBaseHandler {
+
+    public DeleteHandler() {
+        super();
+    }
+
+    public DeleteHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(

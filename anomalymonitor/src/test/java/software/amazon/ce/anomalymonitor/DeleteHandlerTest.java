@@ -30,6 +30,8 @@ public class DeleteHandlerTest {
     @Mock
     private Logger logger;
 
+    private final DeleteHandler handler = new DeleteHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -38,8 +40,6 @@ public class DeleteHandlerTest {
 
     @Test
     public void handleRequest_Success_Delete() {
-        final DeleteHandler handler = new DeleteHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .monitorArn(TestFixtures.MONITOR_ARN)
                 .build();
@@ -66,9 +66,7 @@ public class DeleteHandlerTest {
     }
 
     @Test
-    public void handleRequest_Failurre_Delete() {
-        final DeleteHandler handler = new DeleteHandler();
-
+    public void handleRequest_Failure_Delete() {
         final ResourceModel model = ResourceModel.builder()
                 .monitorArn(TestFixtures.MONITOR_ARN)
                 .build();

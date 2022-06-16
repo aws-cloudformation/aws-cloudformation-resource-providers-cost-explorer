@@ -30,6 +30,8 @@ public class UpdateHandlerTest {
     @Mock
     private Logger logger;
 
+    private final UpdateHandler handler = new UpdateHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -38,8 +40,6 @@ public class UpdateHandlerTest {
 
     @Test
     public void handleRequest_SimpleSuccess() {
-        final UpdateHandler handler = new UpdateHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .monitorArn(TestFixtures.MONITOR_ARN)
                 .build();
@@ -69,9 +69,7 @@ public class UpdateHandlerTest {
     }
 
     @Test
-    public void handleRequest_Failurre_Delete() {
-        final UpdateHandler handler = new UpdateHandler();
-
+    public void handleRequest_Failure_Delete() {
         final ResourceModel model = ResourceModel.builder()
                 .monitorArn(TestFixtures.MONITOR_ARN)
                 .build();

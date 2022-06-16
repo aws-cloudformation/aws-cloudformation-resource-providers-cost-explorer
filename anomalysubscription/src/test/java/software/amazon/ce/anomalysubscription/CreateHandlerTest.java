@@ -26,6 +26,8 @@ public class CreateHandlerTest {
     @Mock
     private Logger logger;
 
+    private final CreateHandler handler = new CreateHandler(TestUtils.generateTestClient());
+
     @BeforeEach
     public void setup() {
         proxy = mock(AmazonWebServicesClientProxy.class);
@@ -34,8 +36,6 @@ public class CreateHandlerTest {
 
     @Test
     public void handleRequest_Success() {
-        final CreateHandler handler = new CreateHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionName(TestFixtures.SUBSCRIPTION_NAME)
                 .threshold(TestFixtures.THRESHOLD)
@@ -70,8 +70,6 @@ public class CreateHandlerTest {
 
     @Test
     public void handleRequest_Success_tagsSubscription() {
-        final CreateHandler handler = new CreateHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionName(TestFixtures.SUBSCRIPTION_NAME)
                 .threshold(TestFixtures.THRESHOLD)
@@ -107,8 +105,6 @@ public class CreateHandlerTest {
 
     @Test
     public void handleRequest_Fail_UserAssignValuesToReadOnlyProperties() {
-        final CreateHandler handler = new CreateHandler();
-
         final ResourceModel model = ResourceModel.builder()
                 .subscriptionName(TestFixtures.SUBSCRIPTION_NAME)
                 .threshold(TestFixtures.THRESHOLD)

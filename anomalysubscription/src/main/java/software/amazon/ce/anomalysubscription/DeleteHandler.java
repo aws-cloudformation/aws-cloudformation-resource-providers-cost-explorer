@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalysubscription;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.UnknownSubscriptionException;
 import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalySubscriptionResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -11,6 +12,14 @@ import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 
 public class DeleteHandler extends AnomalySubscriptionBaseHandler {
+
+    public DeleteHandler() {
+        super();
+    }
+
+    public DeleteHandler(CostExplorerClient costExplorerClient) {
+        super(costExplorerClient);
+    }
 
     @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(

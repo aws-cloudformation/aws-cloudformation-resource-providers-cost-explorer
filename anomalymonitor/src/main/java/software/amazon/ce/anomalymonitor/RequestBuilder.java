@@ -15,7 +15,7 @@ import java.util.List;
 @UtilityClass
 public class RequestBuilder {
     public static CreateAnomalyMonitorRequest buildCreateAnomalyMonitorRequest(ResourceModel model, ResourceHandlerRequest <ResourceModel> request) {
-        Expression monitorSpec = model.getMonitorSpecification() != null ? Utils.toExpresionFromJson(model.getMonitorSpecification()) : null;
+        Expression monitorSpec = model.getMonitorSpecification() != null ? Utils.toExpressionFromJson(model.getMonitorSpecification()) : null;
         AnomalyMonitor anomalyMonitor = AnomalyMonitor.builder()
                 .monitorName(model.getMonitorName())
                 .monitorType(model.getMonitorType())
