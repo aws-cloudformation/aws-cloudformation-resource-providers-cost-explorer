@@ -1,6 +1,7 @@
 package software.amazon.ce.anomalymonitor;
 
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalyMonitorResponse;
+import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -174,10 +177,6 @@ public class CreateHandlerTest {
                 .desiredResourceState(model)
                 .build();
 
-        final CreateAnomalyMonitorResponse mockResponse = CreateAnomalyMonitorResponse.builder()
-                .monitorArn(TestFixtures.MONITOR_ARN)
-                .build();
-
         final ProgressEvent<ResourceModel, CallbackContext> response
                 = handler.handleRequest(proxy, request, null, logger);
 
@@ -189,5 +188,39 @@ public class CreateHandlerTest {
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getMessage()).isNotNull();
         assertThat(response.getErrorCode()).isNotNull();
+    }
+
+    @Test
+    public void handleRequest_Fail_UserAssignInvalidTypeToMonitorSpecification() {
+        final ResourceModel model = ResourceModel.builder()
+                .monitorName(TestFixtures.MONITOR_NAME)
+                .monitorType(TestFixtures.MONITOR_TYPE_CUSTOM)
+                .monitorSpecification(TestFixtures.INVALID_TYPE_MONITOR_SPEC)
+                .build();
+
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+        assertThatThrownBy(() -> handler.handleRequest(proxy, request, null, logger))
+                .isInstanceOf(CfnInvalidRequestException.class)
+                .hasMessageContaining("Invalid request provided: Invalid JSON array");
+    }
+
+    @Test
+    public void handleRequest_Fail_UserAssignInvalidValuesToMonitorSpecification() {
+        final ResourceModel model = ResourceModel.builder()
+                .monitorName(TestFixtures.MONITOR_NAME)
+                .monitorType(TestFixtures.MONITOR_TYPE_CUSTOM)
+                .monitorSpecification(TestFixtures.INVALID_VALUE_MONITOR_SPEC)
+                .build();
+
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+        assertThatThrownBy(() -> handler.handleRequest(proxy, request, null, logger))
+                .isInstanceOf(CfnInvalidRequestException.class)
+                .hasMessageContaining("Invalid request provided: Unsupported JSON array");
     }
 }

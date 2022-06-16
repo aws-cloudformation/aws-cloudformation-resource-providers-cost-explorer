@@ -13,8 +13,6 @@ import lombok.experimental.UtilityClass;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 @UtilityClass
@@ -57,7 +55,7 @@ public class Utils {
         objectWriter = OBJECT_MAPPER.writerWithDefaultPrettyPrinter();
     }
 
-    public static Expression toExpresionFromJson(String expressionJson) {
+    public static Expression toExpressionFromJson(String expressionJson) {
         try {
             return OBJECT_MAPPER.readValue(expressionJson, Expression.class);
         } catch (JsonMappingException e) {

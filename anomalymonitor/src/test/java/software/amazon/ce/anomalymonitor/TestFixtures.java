@@ -12,6 +12,8 @@ public class TestFixtures {
     public static String TAGS_MONITOR_SPEC = "{\"Tags\":{\"Key\":\"aws:createdBy\",\"Values\":[\"TagValue1\",\"TagValue2\"],\"MatchOptions\":null}}";
     public static String CC_MONITOR_SPEC = "{\"Or\":null,\"And\":null,\"Not\":null,\"Dimensions\":null,\"Tags\":null,\"CostCategories\":{\"Key\":\"myResourceEC2Category\",\"Values\":[\"EC2\"]}}";
     public static String LINKEDACCOUNT_MONITOR_SPEC = "{\"Or\":null,\"And\":null,\"Not\":null,\"Dimensions\":{\"Key\":\"LINKED_ACCOUNT\",\"Values\":[\"123456789012\"],\"MatchOptions\":null},\"Tags\":null,\"CostCategories\":null}";
+    public static String INVALID_TYPE_MONITOR_SPEC = "Invalid";
+    public static String INVALID_VALUE_MONITOR_SPEC = "{\"Invalid\":{}}";;
     public static String MONITOR_ARN = "arn:aws:ce::123456789012:anomalymonitor/monitorId";
     public static String NEXT_TOKEN = "NextToken";
     public static String DATE = "2020-11-15T00:00::00Z";
