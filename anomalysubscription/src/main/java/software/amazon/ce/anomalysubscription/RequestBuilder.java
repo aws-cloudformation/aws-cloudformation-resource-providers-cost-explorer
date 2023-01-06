@@ -12,11 +12,13 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import java.util.List;
 
 @UtilityClass
+@SuppressWarnings("deprecation")
 public class RequestBuilder {
     public static CreateAnomalySubscriptionRequest buildCreateAnomalySubscriptionRequest(ResourceModel model, ResourceHandlerRequest<ResourceModel> request) {
         AnomalySubscription anomalySubscription = AnomalySubscription.builder()
                 .subscriptionName(model.getSubscriptionName())
                 .threshold(model.getThreshold())
+                .thresholdExpression(model.getThresholdExpression() != null ? Utils.toExpressionFromJson(model.getThresholdExpression()) : null)
                 .frequency(model.getFrequency())
                 .monitorArnList(model.getMonitorArnList())
                 .subscribers(ResourceModelTranslator.toSDKSubscribers(model.getSubscribers()))
@@ -35,6 +37,7 @@ public class RequestBuilder {
                 .subscriptionArn(model.getSubscriptionArn())
                 .subscriptionName(model.getSubscriptionName())
                 .threshold(model.getThreshold())
+                .thresholdExpression(model.getThresholdExpression() != null ? Utils.toExpressionFromJson(model.getThresholdExpression()) : null)
                 .frequency(model.getFrequency())
                 .subscribers(ResourceModelTranslator.toSDKSubscribers(model.getSubscribers()))
                 .monitorArnList(model.getMonitorArnList())

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@SuppressWarnings("deprecation")
 public class ReadHandler extends AnomalySubscriptionBaseHandler {
 
     public ReadHandler() {
@@ -54,6 +55,7 @@ public class ReadHandler extends AnomalySubscriptionBaseHandler {
             model.setMonitorArnList(anomalySubscription.monitorArnList());
             model.setSubscribers(ResourceModelTranslator.toSubscribers(anomalySubscription.subscribers()));
             model.setThreshold(anomalySubscription.threshold());
+            model.setThresholdExpression(Utils.toJson(anomalySubscription.thresholdExpression()));
             model.setFrequency(anomalySubscription.frequency().toString());
         } catch (UnknownSubscriptionException e) {
             return ProgressEvent.<ResourceModel, CallbackContext>builder()
