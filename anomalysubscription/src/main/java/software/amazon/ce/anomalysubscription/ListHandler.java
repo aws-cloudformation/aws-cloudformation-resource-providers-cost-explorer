@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@SuppressWarnings("deprecation")
 public class ListHandler extends AnomalySubscriptionBaseHandler {
 
     public ListHandler() {
@@ -42,6 +43,7 @@ public class ListHandler extends AnomalySubscriptionBaseHandler {
                         .accountId(anomalySubscription.accountId())
                         .monitorArnList(anomalySubscription.monitorArnList())
                         .threshold(anomalySubscription.threshold())
+                        .thresholdExpression(anomalySubscription.thresholdExpression() != null ? Utils.toJson(anomalySubscription.thresholdExpression()) : null)
                         .frequency(anomalySubscription.frequency().toString())
                         .subscribers(ResourceModelTranslator.toSubscribers(anomalySubscription.subscribers()))
                         .build()
