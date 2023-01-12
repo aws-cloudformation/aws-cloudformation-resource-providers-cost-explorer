@@ -15,6 +15,9 @@ import java.util.List;
 @UtilityClass
 public class RequestBuilder {
     public static CreateAnomalyMonitorRequest buildCreateAnomalyMonitorRequest(ResourceModel model, ResourceHandlerRequest <ResourceModel> request) {
+        // This request builder forwards along whatever's in the ResourceModel to a CreateAnomalyMonitorRequest.
+        // Note that the Create API does not allow for both MonitorDimension and MonitorSpecification at once,
+        // it's up to the supplier of the ResourceModel to guarantee that
         Expression monitorSpec = model.getMonitorSpecification() != null ? Utils.toExpressionFromJson(model.getMonitorSpecification()) : null;
         AnomalyMonitor anomalyMonitor = AnomalyMonitor.builder()
                 .monitorName(model.getMonitorName())
