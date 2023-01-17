@@ -12,11 +12,16 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import java.util.List;
 
 @UtilityClass
+@SuppressWarnings("deprecation")
 public class RequestBuilder {
     public static CreateAnomalySubscriptionRequest buildCreateAnomalySubscriptionRequest(ResourceModel model, ResourceHandlerRequest<ResourceModel> request) {
+        // This request builder forwards along whatever's in the ResourceModel to a CreateAnomalySubscriptionRequest.
+        // Note that the Create API does not allow for both Threshold and ThresholdExpression at once,
+        // it's up to the supplier of the ResourceModel to guarantee that
         AnomalySubscription anomalySubscription = AnomalySubscription.builder()
                 .subscriptionName(model.getSubscriptionName())
                 .threshold(model.getThreshold())
+                .thresholdExpression(model.getThresholdExpression() != null ? Utils.toExpressionFromJson(model.getThresholdExpression()) : null)
                 .frequency(model.getFrequency())
                 .monitorArnList(model.getMonitorArnList())
                 .subscribers(ResourceModelTranslator.toSDKSubscribers(model.getSubscribers()))
@@ -31,10 +36,14 @@ public class RequestBuilder {
     }
 
     public static UpdateAnomalySubscriptionRequest buildUpdateAnomalySubscriptionRequest(ResourceModel model) {
+        // This request builder forwards along whatever's in the ResourceModel to an UpdateAnomalySubscriptionRequest.
+        // Note that the Update API does not allow for both Threshold and ThresholdExpression at once,
+        // it's up to the supplier of the ResourceModel to guarantee that
         return UpdateAnomalySubscriptionRequest.builder()
                 .subscriptionArn(model.getSubscriptionArn())
                 .subscriptionName(model.getSubscriptionName())
                 .threshold(model.getThreshold())
+                .thresholdExpression(model.getThresholdExpression() != null ? Utils.toExpressionFromJson(model.getThresholdExpression()) : null)
                 .frequency(model.getFrequency())
                 .subscribers(ResourceModelTranslator.toSDKSubscribers(model.getSubscribers()))
                 .monitorArnList(model.getMonitorArnList())
