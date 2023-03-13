@@ -1,5 +1,7 @@
 {
-  "Name": "ContractTestCC",
+  "Name": "ContractTestCCV2",
   "RuleVersion": "CostCategoryExpression.v1",
-  "Rules": "[ {\n  \"Value\" : \"Dev\",\n  \"Rule\" : {\n    \"Dimensions\" : {\n      \"Key\" : \"LINKED_ACCOUNT\",\n      \"Values\" : [ \"123456789012\" ]\n    }\n  },\n  \"Type\" : \"REGULAR\"\n} ]"
+  "Rules": "[ {\n  \"Value\" : \"Dev\",\n  \"Rule\" : {\n    \"Dimensions\" : {\n      \"Key\" : \"LINKED_ACCOUNT\",\n      \"Values\" : [ \"123456789012\" ]\n    }\n  },\n  \"Type\" : \"REGULAR\"\n}, {\n  \"Value\" : \"HR\",\n  \"Rule\" : {\n    \"Dimensions\" : {\n      \"Key\" : \"LINKED_ACCOUNT\",\n      \"Values\" : [ \"123456789013\" ]\n    }\n  },\n  \"Type\" : \"REGULAR\"\n} ]",
+  "SplitChargeRules": "[ {\n  \"Source\" : \"Others\",\n  \"Targets\" : [ \"Dev\", \"HR\" ],\n  \"Method\" : \"FIXED\",\n  \"Parameters\" : [ {\n    \"Type\" : \"ALLOCATION_PERCENTAGES\",\n    \"Values\" : [ \"80\", \"20\" ]\n  } ]\n} ]",
+  "DefaultValue": "Others"
 }
