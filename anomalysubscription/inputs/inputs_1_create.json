@@ -1,5 +1,5 @@
 {
-  "SubscriptionName": "ContractTestSubscriptionName",
+  "SubscriptionName": "ContractTestSubscriptionName1",
   "ThresholdExpression": "{\n  \"Dimensions\" : {\n    \"Key\" : \"ANOMALY_TOTAL_IMPACT_PERCENTAGE\",\n    \"Values\" : [ \"1\" ],\n    \"MatchOptions\" : [ \"GREATER_THAN_OR_EQUAL\" ]\n  }\n}",
   "MonitorArnList": [],
   "Subscribers": [

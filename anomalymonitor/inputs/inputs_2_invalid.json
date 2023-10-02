@@ -1,5 +1,5 @@
 {
-  "MonitorName": "ContractTestMonitorName-TAG",
+  "MonitorName": "ContractTestMonitorName2",
   "MonitorType": "CUSTOM",
   "MonitorSpecification": "{\n  \"Tags\" : {\n    \"Key\" : \"aws:createdBy\",\n    \"Values\" : [ \"SubstituteAValidValue11\", \"SubstituteAValidValue2\" ]\n  }\n}",
   "CreationDate": "2020-12-15",
