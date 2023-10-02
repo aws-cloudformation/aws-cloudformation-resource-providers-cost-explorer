@@ -17,6 +17,7 @@ import java.util.Map;
 
 @UtilityClass
 public class Utils {
+    public static final String LAST_EVALUATED_DATE_PLACEHOLDER = "NOT_EVALUATED_YET";
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static ObjectWriter objectWriter;
 
