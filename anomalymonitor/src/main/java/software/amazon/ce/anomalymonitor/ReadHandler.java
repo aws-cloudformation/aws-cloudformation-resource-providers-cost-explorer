@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static software.amazon.ce.anomalymonitor.Utils.LAST_EVALUATED_DATE_PLACEHOLDER;
+
 public class ReadHandler extends AnomalyMonitorBaseHandler {
 
     public ReadHandler() {
@@ -49,7 +51,7 @@ public class ReadHandler extends AnomalyMonitorBaseHandler {
             model.setMonitorName(anomalyMonitor.monitorName());
             model.setCreationDate(anomalyMonitor.creationDate());
             model.setLastUpdatedDate(anomalyMonitor.lastUpdatedDate());
-            model.setLastEvaluatedDate(anomalyMonitor.lastEvaluatedDate());
+            model.setLastEvaluatedDate(anomalyMonitor.lastEvaluatedDate() != null ? anomalyMonitor.lastEvaluatedDate() : LAST_EVALUATED_DATE_PLACEHOLDER);
             model.setMonitorType(anomalyMonitor.monitorType().toString());
             model.setMonitorDimension(anomalyMonitor.monitorDimension() != null ? anomalyMonitor.monitorDimension().toString() : null);
             model.setMonitorSpecification(anomalyMonitor.monitorSpecification() != null ? Utils.toJson(anomalyMonitor.monitorSpecification()) : null);

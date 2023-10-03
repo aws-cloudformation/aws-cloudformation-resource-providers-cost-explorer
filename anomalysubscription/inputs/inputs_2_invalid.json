@@ -1,5 +1,5 @@
 {
-  "SubscriptionName": "ContractTestSubscriptionName",
+  "SubscriptionName": "ContractTestSubscriptionName2",
   "SubscriptionArn": "arn:aws:ce::313025035011:anomalysubscription/d79c551d-ea6b-4b90-8a9e-e5c40dc3b491",
   "ThresholdExpression": "{\n  \"Dimensions\" : {\n    \"Key\" : \"ANOMALY_TOTAL_IMPACT_PERCENTAGE\",\n    \"Values\" : [ \"1\" ],\n    \"MatchOptions\" : [ \"GREATER_THAN_OR_EQUAL\" ]\n  }\n}",
   "MonitorArnList": [],

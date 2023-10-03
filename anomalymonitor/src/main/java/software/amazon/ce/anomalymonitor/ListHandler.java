@@ -8,10 +8,10 @@ import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static software.amazon.ce.anomalymonitor.Utils.LAST_EVALUATED_DATE_PLACEHOLDER;
 
 public class ListHandler extends AnomalyMonitorBaseHandler {
 
@@ -41,7 +41,7 @@ public class ListHandler extends AnomalyMonitorBaseHandler {
                         .monitorName(anomalyMonitor.monitorName())
                         .creationDate(anomalyMonitor.creationDate())
                         .lastUpdatedDate(anomalyMonitor.lastUpdatedDate())
-                        .lastEvaluatedDate(anomalyMonitor.lastEvaluatedDate())
+                        .lastEvaluatedDate(anomalyMonitor.lastEvaluatedDate() != null ? anomalyMonitor.lastEvaluatedDate() : LAST_EVALUATED_DATE_PLACEHOLDER)
                         .monitorType(anomalyMonitor.monitorType().toString())
                         .monitorDimension(anomalyMonitor.monitorDimension() != null ? anomalyMonitor.monitorDimension().toString() : null)
                         .monitorSpecification(anomalyMonitor.monitorSpecification() != null ? Utils.toJson(anomalyMonitor.monitorSpecification()) : null)
