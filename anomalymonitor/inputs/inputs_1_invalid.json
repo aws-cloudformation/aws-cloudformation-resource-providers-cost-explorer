@@ -1,7 +1,0 @@
-{
-  "MonitorName": "ContractTestMonitorName1",
-  "MonitorType": "DIMENSIONAL",
-  "MonitorDimension": "SERVICE",
-  "CreationDate": "2020-12-15",
-  "MonitorArn": "arn:aws:ce::348657076097:anomalymonitor/d79c551d-ea6b-4b90-8a9e-e5c40dc3b491"
-}
