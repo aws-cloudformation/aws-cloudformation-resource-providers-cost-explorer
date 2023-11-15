@@ -1,5 +1,0 @@
-{
-  "MonitorName": "UpdateContractTestMonitorName2",
-  "MonitorType": "CUSTOM",
-  "MonitorSpecification": "{\n  \"Tags\" : {\n    \"Key\" : \"aws:createdBy\",\n    \"Values\" : [ \"SubstituteAValidValue1\", \"SubstituteAValidValue2\" ]\n  }\n}"
-}
