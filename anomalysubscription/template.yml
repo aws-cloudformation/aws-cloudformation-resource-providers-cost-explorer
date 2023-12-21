@@ -12,12 +12,12 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: software.amazon.ce.anomalysubscription.HandlerWrapper::handleRequest
-      Runtime: java21
+      Runtime: java17
       CodeUri: ./target/aws-ce-anomalysubscription-handler-1.0-SNAPSHOT.jar
 
   TestEntrypoint:
     Type: AWS::Serverless::Function
     Properties:
       Handler: software.amazon.ce.anomalysubscription.HandlerWrapper::testEntrypoint
-      Runtime: java21
+      Runtime: java17
       CodeUri: ./target/aws-ce-anomalysubscription-handler-1.0-SNAPSHOT.jar

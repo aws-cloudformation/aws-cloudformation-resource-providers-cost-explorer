@@ -2,7 +2,7 @@
     "artifact_type": "RESOURCE",
     "typeName": "AWS::CE::AnomalySubscription",
     "language": "java",
-    "runtime": "java21",
+    "runtime": "java17",
     "entrypoint": "software.amazon.ce.anomalysubscription.HandlerWrapper::handleRequest",
     "testEntrypoint": "software.amazon.ce.anomalysubscription.HandlerWrapper::testEntrypoint",
     "settings": {

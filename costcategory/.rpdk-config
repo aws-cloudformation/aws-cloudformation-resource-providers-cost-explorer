@@ -2,7 +2,7 @@
     "artifact_type": "RESOURCE",
     "typeName": "AWS::CE::CostCategory",
     "language": "java",
-    "runtime": "java21",
+    "runtime": "java17",
     "entrypoint": "software.amazon.ce.costcategory.HandlerWrapper::handleRequest",
     "testEntrypoint": "software.amazon.ce.costcategory.HandlerWrapper::testEntrypoint",
     "settings": {
