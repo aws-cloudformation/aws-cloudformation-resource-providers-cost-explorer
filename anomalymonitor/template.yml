@@ -12,12 +12,12 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: software.amazon.ce.anomalymonitor.HandlerWrapper::handleRequest
-      Runtime: java8
+      Runtime: java21
       CodeUri: ./target/aws-ce-anomalymonitor-handler-1.0-SNAPSHOT.jar
 
   TestEntrypoint:
     Type: AWS::Serverless::Function
     Properties:
       Handler: software.amazon.ce.anomalymonitor.HandlerWrapper::testEntrypoint
-      Runtime: java8
+      Runtime: java21
       CodeUri: ./target/aws-ce-anomalymonitor-handler-1.0-SNAPSHOT.jar

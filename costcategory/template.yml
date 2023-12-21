@@ -11,7 +11,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: software.amazon.ce.costcategory.HandlerWrapper::handleRequest
-      Runtime: java8
+      Runtime: java21
       CodeUri: ./target/aws-ce-costcategory-handler-1.0-SNAPSHOT.jar
       MemorySize: 512
 
@@ -19,6 +19,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: software.amazon.ce.costcategory.HandlerWrapper::testEntrypoint
-      Runtime: java8
+      Runtime: java21
       CodeUri: ./target/aws-ce-costcategory-handler-1.0-SNAPSHOT.jar
       MemorySize: 512

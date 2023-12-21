@@ -2,7 +2,7 @@
     "artifact_type": "RESOURCE",
     "typeName": "AWS::CE::AnomalyMonitor",
     "language": "java",
-    "runtime": "java8",
+    "runtime": "java21",
     "entrypoint": "software.amazon.ce.anomalymonitor.HandlerWrapper::handleRequest",
     "testEntrypoint": "software.amazon.ce.anomalymonitor.HandlerWrapper::testEntrypoint",
     "settings": {
