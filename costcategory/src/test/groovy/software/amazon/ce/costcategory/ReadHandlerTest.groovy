@@ -20,6 +20,7 @@ class ReadHandlerTest extends HandlerSpecification {
                     .effectiveStart(COST_CATEGORY_EFFECTIVE_START)
                     .ruleVersion(RULE_VERSION)
                     .rules([ RULE_DIMENSION ])
+                    .splitChargeRules([ SPLIT_CHARGE_RULE_EVEN ])
                     .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
                     .build()
             ).build()
@@ -42,6 +43,7 @@ class ReadHandlerTest extends HandlerSpecification {
         model.effectiveStart == COST_CATEGORY_EFFECTIVE_START
         model.ruleVersion == RULE_VERSION
         model.rules == "[ ${JSON_RULE_DIMENSION} ]"
+        model.splitChargeRules == "[ ${JSON_SPLIT_CHARGE_RULE_EVEN} ]"
         model.defaultValue == COST_CATEGORY_DEFAULT_VALUE
 
         event.resourceModel == model

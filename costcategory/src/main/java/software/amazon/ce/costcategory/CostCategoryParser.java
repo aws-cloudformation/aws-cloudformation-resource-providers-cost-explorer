@@ -112,12 +112,12 @@ public class CostCategoryParser {
     /**
      * Parser list of {@link CostCategorySplitChargeRule} into JSON array string.
      */
-    public static String costCategorySplitChargeRulesToJson(List<CostCategorySplitChargeRule> rules) {
-        if (rules == null) {
+    public static String costCategorySplitChargeRulesToJson(CostCategory costCategory) {
+        if (!costCategory.hasSplitChargeRules()) {
             return null;
         }
         try {
-            return objectWriter.writeValueAsString(rules);
+            return objectWriter.writeValueAsString(costCategory.splitChargeRules());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
