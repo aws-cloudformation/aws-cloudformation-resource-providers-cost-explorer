@@ -45,7 +45,7 @@ public class ReadHandler extends CostCategoryBaseHandler {
             model.setEffectiveStart(costCategory.effectiveStart());
             model.setRuleVersion(costCategory.ruleVersionAsString());
             model.setRules(CostCategoryParser.costCategoryRulesToJson(costCategory.rules()));
-            model.setSplitChargeRules(CostCategoryParser.costCategorySplitChargeRulesToJson(costCategory.splitChargeRules()));
+            model.setSplitChargeRules(CostCategoryParser.costCategorySplitChargeRulesToJson(costCategory));
             model.setDefaultValue(costCategory.defaultValue());
 
             return ProgressEvent.<ResourceModel, CallbackContext>builder()

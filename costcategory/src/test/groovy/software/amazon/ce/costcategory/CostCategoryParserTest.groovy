@@ -1,5 +1,6 @@
 package software.amazon.ce.costcategory
 
+import software.amazon.awssdk.services.costexplorer.model.CostCategory
 import software.amazon.awssdk.services.costexplorer.model.CostCategoryRule
 import software.amazon.awssdk.services.costexplorer.model.CostCategorySplitChargeRule
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException
@@ -7,12 +8,6 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import static software.amazon.ce.costcategory.Fixtures.*
-import static software.amazon.ce.costcategory.Fixtures.JSON_SPLIT_CHARGE_RULE_EVEN
-import static software.amazon.ce.costcategory.Fixtures.JSON_SPLIT_CHARGE_RULE_FIXED
-import static software.amazon.ce.costcategory.Fixtures.JSON_SPLIT_CHARGE_RULE_PROPORTIONAL
-import static software.amazon.ce.costcategory.Fixtures.SPLIT_CHARGE_RULE_EVEN
-import static software.amazon.ce.costcategory.Fixtures.SPLIT_CHARGE_RULE_FIXED
-import static software.amazon.ce.costcategory.Fixtures.SPLIT_CHARGE_RULE_PROPORTIONAL
 
 class CostCategoryParserTest extends Specification {
 
@@ -85,7 +80,8 @@ class CostCategoryParserTest extends Specification {
     @Unroll
     def "Test: costCategorySplitChargeRulesToJson for #rule -> #expectedJson"(String expectedJson, CostCategorySplitChargeRule rule) {
         when:
-        def jsonArray = CostCategoryParser.costCategorySplitChargeRulesToJson([rule])
+        def costCategory = CostCategory.builder().splitChargeRules([rule]).build()
+        def jsonArray = CostCategoryParser.costCategorySplitChargeRulesToJson(costCategory)
 
         then:
         jsonArray == "[ ${expectedJson} ]"
@@ -97,9 +93,10 @@ class CostCategoryParserTest extends Specification {
         JSON_SPLIT_CHARGE_RULE_FIXED        | SPLIT_CHARGE_RULE_FIXED
     }
 
-    def "Test: costCategorySplitChargeRulesToJson when input is null"() {
+    def "Test: costCategorySplitChargeRulesToJson when cost category has empty split charge rules"() {
         when:
-        def jsonArray = CostCategoryParser.costCategorySplitChargeRulesToJson(null)
+        def costCategory = CostCategory.builder().build()
+        def jsonArray = CostCategoryParser.costCategorySplitChargeRulesToJson(costCategory)
 
         then:
         jsonArray == null
