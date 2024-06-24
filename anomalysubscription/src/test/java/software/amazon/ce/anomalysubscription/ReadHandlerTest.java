@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalysubscription;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.GetAnomalySubscriptionsResponse;
 import software.amazon.awssdk.services.costexplorer.model.UnknownSubscriptionException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -32,7 +33,8 @@ public class ReadHandlerTest {
     @Mock
     private Logger logger;
 
-    private final ReadHandler handler = new ReadHandler(TestUtils.generateTestClient());
+
+    private final ReadHandler handler = new ReadHandler(mock(CostExplorerClient.class));
 
     @BeforeEach
     public void setup() {

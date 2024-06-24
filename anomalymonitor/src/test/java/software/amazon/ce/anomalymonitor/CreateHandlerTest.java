@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalyMonitorResponse;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -29,7 +30,7 @@ public class CreateHandlerTest {
     @Mock
     private Logger logger;
 
-    private final CreateHandler handler = new CreateHandler(TestUtils.generateTestClient());
+    private final CreateHandler handler = new CreateHandler(mock(CostExplorerClient.class));
 
     @BeforeEach
     public void setup() {

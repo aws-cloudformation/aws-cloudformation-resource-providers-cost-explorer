@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalyMonitorResponse;
 import software.amazon.awssdk.services.costexplorer.model.UnknownMonitorException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -30,7 +31,7 @@ public class DeleteHandlerTest {
     @Mock
     private Logger logger;
 
-    private final DeleteHandler handler = new DeleteHandler(TestUtils.generateTestClient());
+    private final DeleteHandler handler = new DeleteHandler(mock(CostExplorerClient.class));
 
     @BeforeEach
     public void setup() {

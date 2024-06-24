@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalysubscription;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalySubscriptionResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -26,7 +27,7 @@ public class CreateHandlerTest {
     @Mock
     private Logger logger;
 
-    private final CreateHandler handler = new CreateHandler(TestUtils.generateTestClient());
+    private final CreateHandler handler = new CreateHandler(mock(CostExplorerClient.class));
 
     @BeforeEach
     public void setup() {
