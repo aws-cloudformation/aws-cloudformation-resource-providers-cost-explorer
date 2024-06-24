@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.UpdateAnomalyMonitorResponse;
 import software.amazon.awssdk.services.costexplorer.model.UnknownMonitorException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -30,7 +31,7 @@ public class UpdateHandlerTest {
     @Mock
     private Logger logger;
 
-    private final UpdateHandler handler = new UpdateHandler(TestUtils.generateTestClient());
+    private final UpdateHandler handler = new UpdateHandler(mock(CostExplorerClient.class));
 
     @BeforeEach
     public void setup() {

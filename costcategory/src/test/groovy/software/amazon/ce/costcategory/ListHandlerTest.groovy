@@ -9,7 +9,7 @@ import static software.amazon.ce.costcategory.Fixtures.*
 
 class ListHandlerTest extends HandlerSpecification {
 
-    def handler = new ListHandler(TestUtils.generateTestClient())
+    def handler = new ListHandler(ceClient)
 
     def "Test: handleRequest"() {
         given:

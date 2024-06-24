@@ -10,7 +10,7 @@ import static software.amazon.ce.costcategory.Fixtures.*
 
 class DeleteHandlerTest extends HandlerSpecification {
 
-    def handler = new DeleteHandler(TestUtils.generateTestClient())
+    def handler = new DeleteHandler(ceClient)
 
     def "Test: handleRequest"() {
         given:

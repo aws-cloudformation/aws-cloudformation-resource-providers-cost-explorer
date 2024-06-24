@@ -9,7 +9,7 @@ import static software.amazon.ce.costcategory.Fixtures.*
 
 class ReadHandlerTest extends HandlerSpecification {
 
-    def handler = new ReadHandler(TestUtils.generateTestClient())
+    def handler = new ReadHandler(ceClient)
 
     def "Test: ReadHandler.handleRequest"() {
         given:

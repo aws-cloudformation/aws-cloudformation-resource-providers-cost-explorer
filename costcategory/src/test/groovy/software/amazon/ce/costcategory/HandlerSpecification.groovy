@@ -1,5 +1,6 @@
 package software.amazon.ce.costcategory
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy
 import software.amazon.cloudformation.proxy.Logger
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest
@@ -14,4 +15,6 @@ class HandlerSpecification extends Specification {
     def callbackContext = Mock(CallbackContext)
 
     def logger = Mock(Logger)
+
+    def ceClient = Mock(CostExplorerClient)
 }

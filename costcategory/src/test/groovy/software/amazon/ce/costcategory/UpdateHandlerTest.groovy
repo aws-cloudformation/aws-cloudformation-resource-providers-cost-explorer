@@ -8,7 +8,7 @@ import static software.amazon.ce.costcategory.Fixtures.*
 
 class UpdateHandlerTest extends HandlerSpecification {
 
-    def handler = new UpdateHandler(TestUtils.generateTestClient())
+    def handler = new UpdateHandler(ceClient)
 
     def "Test: handleRequest"() {
         given:

@@ -11,7 +11,7 @@ import static software.amazon.ce.costcategory.Fixtures.JSON_SPLIT_CHARGE_RULE_PR
 
 class CreateHandlerTest extends HandlerSpecification {
 
-    def handler = new CreateHandler(TestUtils.generateTestClient())
+    def handler = new CreateHandler(ceClient)
 
     def "Test: handleRequest"() {
         given:

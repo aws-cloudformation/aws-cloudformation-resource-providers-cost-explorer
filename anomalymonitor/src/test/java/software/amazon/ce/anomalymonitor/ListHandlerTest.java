@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -30,7 +31,7 @@ public class ListHandlerTest {
     @Mock
     private Logger logger;
 
-    private final ListHandler handler = new ListHandler(TestUtils.generateTestClient());
+    private final ListHandler handler = new ListHandler(mock(CostExplorerClient.class));
 
     @BeforeEach
     public void setup() {

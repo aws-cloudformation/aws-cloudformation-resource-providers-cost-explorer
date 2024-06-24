@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
@@ -30,7 +31,7 @@ public class ReadHandlerTest {
     @Mock
     private Logger logger;
 
-    private final ReadHandler handler = new ReadHandler(TestUtils.generateTestClient());
+    private final ReadHandler handler = new ReadHandler(mock(CostExplorerClient.class));
 
     @BeforeEach
     public void setup() {
