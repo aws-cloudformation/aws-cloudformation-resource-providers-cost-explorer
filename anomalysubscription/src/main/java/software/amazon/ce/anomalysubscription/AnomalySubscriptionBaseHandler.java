@@ -28,7 +28,9 @@ public abstract class AnomalySubscriptionBaseHandler extends BaseHandler<Callbac
     // we need to have this map from partition to global region
     protected static Map<String, Region> partitionToGlobalRegionMap = ImmutableMap.of(
             Region.CN_NORTH_1.metadata().partition().name(), Region.AWS_CN_GLOBAL,
-            Region.US_EAST_1.metadata().partition().name(), Region.AWS_GLOBAL
+            Region.EU_ISOE_WEST_1.metadata().partition().name(), Region.EU_ISOE_WEST_1,
+            Region.US_EAST_1.metadata().partition().name(), Region.AWS_GLOBAL,
+            Region.US_ISOF_SOUTH_1.metadata().partition().name(), Region.US_ISOF_SOUTH_1
     );
 
     public AnomalySubscriptionBaseHandler() {
