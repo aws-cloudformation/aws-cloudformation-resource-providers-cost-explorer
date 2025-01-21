@@ -1,8 +1,6 @@
 package software.amazon.ce.anomalysubscription;
 
-// TODO: replace all usage of SdkClient with your service client type, e.g; YourServiceAsyncClient
-// import software.amazon.awssdk.services.yourservice.YourServiceAsyncClient;
-
+import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -11,6 +9,7 @@ import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
+import software.amazon.cloudformation.proxy.ProxyClient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,46 +27,64 @@ public class ReadHandler extends AnomalySubscriptionBaseHandler {
     }
 
     @Override
-    public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
-            final AmazonWebServicesClientProxy proxy,
-            final ResourceHandlerRequest<ResourceModel> request,
-            final CallbackContext callbackContext,
-            final Logger logger) {
+    protected ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+        final AmazonWebServicesClientProxy proxy,
+        final ResourceHandlerRequest<ResourceModel> request,
+        final CallbackContext callbackContext,
+        final ProxyClient<CostExplorerClient> proxyClient,
+        final Logger logger
+    ) {
+        final ResourceModel resourceModel = request.getDesiredResourceState();
 
-        final ResourceModel model = request.getDesiredResourceState();
+        return ProgressEvent.progress(resourceModel, callbackContext)
+            .then(progress -> proxy.initiate("AWS-CE-AnomalySubscription::Read", proxyClient, resourceModel, callbackContext)
+                .translateToServiceRequest(model -> {
+                    List<String> subscriptionArns = Stream.of(model.getSubscriptionArn()).collect(Collectors.toList());
+                    return RequestBuilder.buildGetAnomalySubscriptionsRequest(subscriptionArns, null);
+                })
+                .makeServiceCall((awsRequest, client) -> {
+                    return proxyClient.injectCredentialsAndInvokeV2(awsRequest, proxyClient.client()::getAnomalySubscriptions);
+                })
+                .handleError((awsRequest, exception, client, model, context) -> {
+                    if (exception instanceof UnknownSubscriptionException) {
+                        return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .resourceModel(resourceModel)
+                            .status(OperationStatus.FAILED)
+                            .errorCode(HandlerErrorCode.NotFound)
+                            .build();
+                    }
+                    throw exception;
+                })
+                .done(response -> {
+                    if (response.anomalySubscriptions().isEmpty()) {
+                        return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                                .resourceModel(resourceModel)
+                                .status(OperationStatus.FAILED)
+                                .errorCode(HandlerErrorCode.NotFound)
+                                .build();
+                    }
 
-        try {
-            List<String> subscriptionArns = Stream.of(model.getSubscriptionArn()).collect(Collectors.toList());
-            GetAnomalySubscriptionsResponse response = proxy.injectCredentialsAndInvokeV2(
-                    RequestBuilder.buildGetAnomalySubscriptionsRequest(subscriptionArns, null),
-                    costExplorerClient::getAnomalySubscriptions
+                    AnomalySubscription anomalySubscription = response.anomalySubscriptions().get(0);
+                    resourceModel.setSubscriptionArn(anomalySubscription.subscriptionArn());
+                    resourceModel.setSubscriptionName(anomalySubscription.subscriptionName());
+                    resourceModel.setAccountId(anomalySubscription.accountId());
+                    resourceModel.setMonitorArnList(anomalySubscription.monitorArnList());
+                    resourceModel.setSubscribers(ResourceModelTranslator.toSubscribers(anomalySubscription.subscribers()));
+                    resourceModel.setThreshold(anomalySubscription.threshold());
+                    resourceModel.setThresholdExpression(Utils.toJson(anomalySubscription.thresholdExpression()));
+                    resourceModel.setFrequency(anomalySubscription.frequency().toString());
+
+                    return ProgressEvent.progress(resourceModel, callbackContext);
+                })
+            ).then(progress -> proxy.initiate("AWS-CE-AnomalySubscription::ListTags", proxyClient, resourceModel, callbackContext)
+                .translateToServiceRequest(model -> RequestBuilder.buildListTagsForResourceRequest(model))
+                .makeServiceCall((awsRequest, client) -> {
+                    return proxyClient.injectCredentialsAndInvokeV2(awsRequest, proxyClient.client()::listTagsForResource);
+                })
+                .done(response -> {
+                    resourceModel.setResourceTags(ResourceModelTranslator.toCFNResourceTags(response.resourceTags()));
+                    return ProgressEvent.defaultSuccessHandler(resourceModel);
+                })
             );
-            if (response.anomalySubscriptions().isEmpty()) {
-                return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                        .resourceModel(model)
-                        .status(OperationStatus.FAILED)
-                        .errorCode(HandlerErrorCode.NotFound)
-                        .build();
-            }
-            AnomalySubscription anomalySubscription = response.anomalySubscriptions().get(0);
-            model.setSubscriptionName(anomalySubscription.subscriptionName());
-            model.setAccountId(anomalySubscription.accountId());
-            model.setMonitorArnList(anomalySubscription.monitorArnList());
-            model.setSubscribers(ResourceModelTranslator.toSubscribers(anomalySubscription.subscribers()));
-            model.setThreshold(anomalySubscription.threshold());
-            model.setThresholdExpression(Utils.toJson(anomalySubscription.thresholdExpression()));
-            model.setFrequency(anomalySubscription.frequency().toString());
-        } catch (UnknownSubscriptionException e) {
-            return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                    .resourceModel(model)
-                    .status(OperationStatus.FAILED)
-                    .errorCode(HandlerErrorCode.NotFound)
-                    .build();
-        }
-
-        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                .resourceModel(model)
-                .status(OperationStatus.SUCCESS)
-                .build();
     }
 }

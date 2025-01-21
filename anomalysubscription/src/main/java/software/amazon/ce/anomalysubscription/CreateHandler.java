@@ -1,14 +1,18 @@
 package software.amazon.ce.anomalysubscription;
 
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalySubscriptionResponse;
+import software.amazon.awssdk.services.costexplorer.model.UnknownSubscriptionException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.OperationStatus;
+import software.amazon.cloudformation.proxy.ProxyClient;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 
+import static software.amazon.ce.anomalysubscription.Utils.SUBSCRIPTION_ALREADY_EXISTS;
 
 public class CreateHandler extends AnomalySubscriptionBaseHandler {
 
@@ -40,12 +44,28 @@ public class CreateHandler extends AnomalySubscriptionBaseHandler {
                     .message("Attempting to set a ReadOnly Property.")
                     .build();
         }
-        CreateAnomalySubscriptionResponse response = proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildCreateAnomalySubscriptionRequest(model, request),
-                costExplorerClient::createAnomalySubscription
-        );
 
-        model.setSubscriptionArn(response.subscriptionArn());
+        try {
+            CreateAnomalySubscriptionResponse response = proxy.injectCredentialsAndInvokeV2(
+                    RequestBuilder.buildCreateAnomalySubscriptionRequest(model, request),
+                    costExplorerClient::createAnomalySubscription
+            );
+
+            model.setSubscriptionArn(response.subscriptionArn());
+        } catch (Exception e) {
+            if (e instanceof AwsServiceException) {
+                String errorMessage = ((AwsServiceException) e).awsErrorDetails().errorMessage();
+                if (SUBSCRIPTION_ALREADY_EXISTS.equals(errorMessage)) {
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .resourceModel(model)
+                            .status(OperationStatus.FAILED)
+                            .errorCode(HandlerErrorCode.AlreadyExists)
+                            .build();
+                }
+                throw e;
+            }
+            throw e;
+        }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
                 .resourceModel(model)

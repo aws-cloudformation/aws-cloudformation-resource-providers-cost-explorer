@@ -54,4 +54,17 @@ public class ResourceModelTranslator {
                                 .build())
                 .collect(Collectors.toList());
     }
+
+    public static List<software.amazon.ce.anomalysubscription.ResourceTag> toCFNResourceTags(List<ResourceTag> resourceTags) {
+        if (resourceTags == null) {
+            return Collections.emptyList();
+        }
+
+        return resourceTags.stream().filter(Objects::nonNull).map(
+                resourceTag -> software.amazon.ce.anomalysubscription.ResourceTag.builder()
+                        .key(resourceTag.key())
+                        .value(resourceTag.value())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

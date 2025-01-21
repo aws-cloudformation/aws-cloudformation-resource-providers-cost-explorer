@@ -24,6 +24,7 @@ import java.util.Map;
 
 @UtilityClass
 public class Utils {
+    public static final String SUBSCRIPTION_ALREADY_EXISTS = "Cannot create a subscription with the same subscription name as an existing subscription";
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static ObjectWriter objectWriter;
 

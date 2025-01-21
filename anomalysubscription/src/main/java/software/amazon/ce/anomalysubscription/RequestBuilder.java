@@ -5,6 +5,7 @@ import software.amazon.awssdk.services.costexplorer.model.AnomalySubscription;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalySubscriptionRequest;
 import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalySubscriptionRequest;
 import software.amazon.awssdk.services.costexplorer.model.GetAnomalySubscriptionsRequest;
+import software.amazon.awssdk.services.costexplorer.model.ListTagsForResourceRequest;
 import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
 import software.amazon.awssdk.services.costexplorer.model.UpdateAnomalySubscriptionRequest;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
@@ -60,6 +61,12 @@ public class RequestBuilder {
     public static DeleteAnomalySubscriptionRequest buildDeleteAnomalySubscriptionRequest(ResourceModel model) {
         return DeleteAnomalySubscriptionRequest.builder()
                 .subscriptionArn(model.getSubscriptionArn())
+                .build();
+    }
+
+    public static ListTagsForResourceRequest buildListTagsForResourceRequest(ResourceModel model) {
+        return ListTagsForResourceRequest.builder()
+                .resourceArn(model.getSubscriptionArn())
                 .build();
     }
 }
