@@ -18,6 +18,8 @@ import java.util.Map;
 @UtilityClass
 public class Utils {
     public static final String LAST_EVALUATED_DATE_PLACEHOLDER = "NOT_EVALUATED_YET";
+    public static final String MONITOR_ALREADY_EXISTS = "Cannot create a monitor with the same monitor name as an existing monitor";
+    public static final String DIMENSIONAL_MONITOR_ALREADY_EXISTS = "Limit exceeded on dimensional spend monitor creation";
     static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static ObjectWriter objectWriter;
 
