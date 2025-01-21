@@ -1,8 +1,11 @@
 package software.amazon.ce.anomalysubscription;
 
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalySubscriptionResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.HandlerErrorCode;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
@@ -17,6 +20,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateHandlerTest {
@@ -165,5 +169,36 @@ public class CreateHandlerTest {
         assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
         assertThat(response.getMessage()).isNotNull();
         assertThat(response.getErrorCode()).isNotNull();
+    }
+
+    @Test
+    public void handleRequest_Fail_SubscriptionAlreadyExists() {
+        final ResourceModel model = ResourceModel.builder()
+                .subscriptionName(TestFixtures.SUBSCRIPTION_NAME)
+                .thresholdExpression(TestFixtures.THRESHOLD_EXPRESSION)
+                .subscribers(TestFixtures.CFN_MODEL_SUBSCRIBERS)
+                .frequency(TestFixtures.FREQUENCY)
+                .monitorArnList(TestFixtures.MONITOR_ARNS)
+                .build();
+
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+        final AwsServiceException exception = AwsServiceException.builder()
+                .awsErrorDetails(AwsErrorDetails.builder()
+                        .errorMessage(Utils.SUBSCRIPTION_ALREADY_EXISTS)
+                        .build())
+                .build();
+
+        doThrow(exception)
+                .when(proxy).injectCredentialsAndInvokeV2(any(), any());
+
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, null, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.AlreadyExists);
     }
 }
