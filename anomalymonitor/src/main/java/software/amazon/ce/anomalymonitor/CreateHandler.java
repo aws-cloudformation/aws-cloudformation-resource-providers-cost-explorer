@@ -1,5 +1,6 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalyMonitorResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
@@ -8,6 +9,9 @@ import software.amazon.cloudformation.proxy.ProgressEvent;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
+
+import static software.amazon.ce.anomalymonitor.Utils.DIMENSIONAL_MONITOR_ALREADY_EXISTS;
+import static software.amazon.ce.anomalymonitor.Utils.MONITOR_ALREADY_EXISTS;
 
 /**
  * create: CloudFormation invokes this handler when the resource is initially created during stack create operations.
@@ -42,12 +46,29 @@ public class CreateHandler extends AnomalyMonitorBaseHandler {
                     .message("Attempting to set a ReadOnly Property.")
                     .build();
         }
-        CreateAnomalyMonitorResponse response = proxy.injectCredentialsAndInvokeV2(
-                RequestBuilder.buildCreateAnomalyMonitorRequest(model, request),
-                costExplorerClient::createAnomalyMonitor
-        );
+        try {
+            CreateAnomalyMonitorResponse response = proxy.injectCredentialsAndInvokeV2(
+                    RequestBuilder.buildCreateAnomalyMonitorRequest(model, request),
+                    costExplorerClient::createAnomalyMonitor
+            );
 
-        model.setMonitorArn(response.monitorArn());
+            model.setMonitorArn(response.monitorArn());
+        } catch (Exception e) {
+            if (e instanceof AwsServiceException) {
+                String errorMessage = ((AwsServiceException) e).awsErrorDetails().errorMessage();
+
+                // if duplicate monitor, return an AlreadyExists exception per CFN contract tests
+                if (MONITOR_ALREADY_EXISTS.equals(errorMessage) || DIMENSIONAL_MONITOR_ALREADY_EXISTS.equals(errorMessage)) {
+                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                            .resourceModel(model)
+                            .status(OperationStatus.FAILED)
+                            .errorCode(HandlerErrorCode.AlreadyExists)
+                            .build();
+                }
+                throw e;
+            }
+            throw e;
+        }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)

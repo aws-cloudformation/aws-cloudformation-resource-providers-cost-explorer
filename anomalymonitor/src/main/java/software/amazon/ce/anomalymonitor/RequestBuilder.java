@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.costexplorer.model.DeleteAnomalyMonitorRe
 import software.amazon.awssdk.services.costexplorer.model.GetAnomalyMonitorsRequest;
 import software.amazon.awssdk.services.costexplorer.model.ResourceTag;
 import software.amazon.awssdk.services.costexplorer.model.UpdateAnomalyMonitorRequest;
+import software.amazon.awssdk.services.costexplorer.model.ListTagsForResourceRequest;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.util.List;
@@ -51,6 +52,12 @@ public class RequestBuilder {
     public static DeleteAnomalyMonitorRequest buildDeleteAnomalyMonitorRequest(ResourceModel model) {
         return DeleteAnomalyMonitorRequest.builder()
                 .monitorArn(model.getMonitorArn())
+                .build();
+    }
+
+    public static ListTagsForResourceRequest buildListTagsForResourceRequest(ResourceModel model) {
+        return ListTagsForResourceRequest.builder()
+                .resourceArn(model.getMonitorArn())
                 .build();
     }
 }
