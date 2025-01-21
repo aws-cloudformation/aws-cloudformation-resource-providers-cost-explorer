@@ -1,11 +1,17 @@
 package software.amazon.ce.anomalymonitor;
 
 import software.amazon.awssdk.core.internal.http.loader.DefaultSdkHttpClientBuilder;
+import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.http.SdkHttpConfigurationOption;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.utils.AttributeMap;
 import software.amazon.awssdk.utils.ImmutableMap;
+import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.Logger;
+import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ProxyClient;
+import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.time.Duration;
 import java.util.Map;
@@ -45,5 +51,31 @@ public abstract class AnomalyMonitorBaseHandler extends BaseHandler<CallbackCont
 
     public AnomalyMonitorBaseHandler(CostExplorerClient costExplorerClient) {
         this.costExplorerClient = costExplorerClient;
+    }
+
+    @Override
+    public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+        final AmazonWebServicesClientProxy proxy,
+        final ResourceHandlerRequest<ResourceModel> request,
+        final CallbackContext callbackContext,
+        final Logger logger
+    ) {
+        return handleRequest(
+            proxy,
+            request,
+            callbackContext != null ? callbackContext : new CallbackContext(),
+            proxy.newProxy(() -> costExplorerClient),
+            logger
+        );
+    }
+
+    protected ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+        final AmazonWebServicesClientProxy proxy,
+        final ResourceHandlerRequest<ResourceModel> request,
+        final CallbackContext callbackContext,
+        final ProxyClient<CostExplorerClient> proxyClient,
+        final Logger logger
+    ) {
+        throw new RuntimeException("Handler needs to implement either one of the handleRequest methods");
     }
 }
