@@ -1,9 +1,12 @@
 package software.amazon.ce.anomalymonitor;
 
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateAnomalyMonitorResponse;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.HandlerErrorCode;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
@@ -19,6 +22,7 @@ import static org.mockito.Mockito.doReturn;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
@@ -223,5 +227,65 @@ public class CreateHandlerTest {
         assertThatThrownBy(() -> handler.handleRequest(proxy, request, null, logger))
                 .isInstanceOf(CfnInvalidRequestException.class)
                 .hasMessageContaining("Invalid request provided: Unsupported JSON array");
+    }
+
+    @Test
+    public void handleRequest_Fail_MonitorAlreadyExists() {
+        final ResourceModel model = ResourceModel.builder()
+                .monitorName(TestFixtures.MONITOR_NAME)
+                .monitorType(TestFixtures.MONITOR_TYPE_CUSTOM)
+                .monitorSpecification(TestFixtures.LINKEDACCOUNT_MONITOR_SPEC)
+                .build();
+
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+
+        final AwsServiceException exception = AwsServiceException.builder()
+                .awsErrorDetails(AwsErrorDetails.builder()
+                        .errorMessage(Utils.MONITOR_ALREADY_EXISTS)
+                        .build())
+                .build();
+
+        doThrow(exception)
+                .when(proxy).injectCredentialsAndInvokeV2(any(), any());
+
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, null, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.AlreadyExists);
+    }
+
+    @Test
+    public void handleRequest_Fail_DimensionalMonitorAlreadyExists() {
+        final ResourceModel model = ResourceModel.builder()
+                .monitorName(TestFixtures.MONITOR_NAME)
+                .monitorType(TestFixtures.MONITOR_TYPE_CUSTOM)
+                .monitorSpecification(TestFixtures.LINKEDACCOUNT_MONITOR_SPEC)
+                .build();
+
+        final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
+                .desiredResourceState(model)
+                .build();
+
+
+        final AwsServiceException exception = AwsServiceException.builder()
+                .awsErrorDetails(AwsErrorDetails.builder()
+                        .errorMessage(Utils.DIMENSIONAL_MONITOR_ALREADY_EXISTS)
+                        .build())
+                .build();
+
+        doThrow(exception)
+                .when(proxy).injectCredentialsAndInvokeV2(any(), any());
+
+        final ProgressEvent<ResourceModel, CallbackContext> response
+                = handler.handleRequest(proxy, request, null, logger);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatus()).isEqualTo(OperationStatus.FAILED);
+        assertThat(response.getErrorCode()).isEqualTo(HandlerErrorCode.AlreadyExists);
     }
 }
