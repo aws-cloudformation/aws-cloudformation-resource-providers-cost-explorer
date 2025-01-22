@@ -32,7 +32,7 @@ public abstract class AnomalySubscriptionBaseHandler extends BaseHandler<Callbac
 
     // Anomaly Subscription is global in partition. Thus, in order to choose the global region when constructing the client,
     // we need to have this map from partition to global region
-    protected static Map<String, Region> partitionToGlobalRegionMap = ImmutableMap.of(
+    protected static final Map<String, Region> partitionToGlobalRegionMap = ImmutableMap.of(
             Region.CN_NORTH_1.metadata().partition().name(), Region.AWS_CN_GLOBAL,
             Region.US_EAST_1.metadata().partition().name(), Region.AWS_GLOBAL
     );

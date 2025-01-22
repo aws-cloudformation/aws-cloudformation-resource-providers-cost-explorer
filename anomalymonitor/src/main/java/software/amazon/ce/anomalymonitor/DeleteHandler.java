@@ -30,7 +30,7 @@ public class DeleteHandler extends AnomalyMonitorBaseHandler {
         final ResourceModel model = request.getDesiredResourceState();
 
         try {
-            DeleteAnomalyMonitorResponse response = proxy.injectCredentialsAndInvokeV2(
+            proxy.injectCredentialsAndInvokeV2(
                     RequestBuilder.buildDeleteAnomalyMonitorRequest(model),
                     costExplorerClient::deleteAnomalyMonitor
             );

@@ -31,7 +31,7 @@ public class DeleteHandler extends AnomalySubscriptionBaseHandler {
         final ResourceModel model = request.getDesiredResourceState();
 
         try {
-            DeleteAnomalySubscriptionResponse response = proxy.injectCredentialsAndInvokeV2(
+            proxy.injectCredentialsAndInvokeV2(
                     RequestBuilder.buildDeleteAnomalySubscriptionRequest(model),
                     costExplorerClient::deleteAnomalySubscription
             );
