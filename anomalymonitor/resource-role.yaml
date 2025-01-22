@@ -33,6 +33,7 @@ Resources:
                 - "ce:CreateAnomalyMonitor"
                 - "ce:DeleteAnomalyMonitor"
                 - "ce:GetAnomalyMonitors"
+                - "ce:ListTagsForResource"
                 - "ce:TagResource"
                 - "ce:UpdateAnomalyMonitor"
                 Resource: "*"

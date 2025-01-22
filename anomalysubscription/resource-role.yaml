@@ -33,6 +33,7 @@ Resources:
                 - "ce:CreateAnomalySubscription"
                 - "ce:DeleteAnomalySubscription"
                 - "ce:GetAnomalySubscriptions"
+                - "ce:ListTagsForResource"
                 - "ce:TagResource"
                 - "ce:UpdateAnomalySubscription"
                 Resource: "*"
