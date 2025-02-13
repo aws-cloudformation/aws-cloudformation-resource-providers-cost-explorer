@@ -9,12 +9,16 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.google.common.collect.ImmutableMap;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.collections4.MapUtils;
 import software.amazon.awssdk.services.costexplorer.model.*;
 import software.amazon.cloudformation.exceptions.CfnInvalidRequestException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Parser between JSON array string and list of CostCategoryDataType.
@@ -121,5 +125,31 @@ public class CostCategoryParser {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<software.amazon.awssdk.services.costexplorer.model.ResourceTag> toSDKResourceTags(Map<String, String> resourceTags) {
+        if (MapUtils.isEmpty(resourceTags)) {
+            return Collections.emptyList();
+        }
+
+        return resourceTags.entrySet().stream().filter(Objects::nonNull).map(
+                        resourceTag -> software.amazon.awssdk.services.costexplorer.model.ResourceTag.builder()
+                                .key(resourceTag.getKey())
+                                .value(resourceTag.getValue())
+                                .build())
+                .collect(Collectors.toList());
+    }
+
+    public static List<ResourceTag> toCFNResourceTags(List<software.amazon.awssdk.services.costexplorer.model.ResourceTag> resourceTags) {
+        if (resourceTags == null) {
+            return Collections.emptyList();
+        }
+
+        return resourceTags.stream().filter(Objects::nonNull).map(
+                        resourceTag -> ResourceTag.builder()
+                                .key(resourceTag.key())
+                                .value(resourceTag.value())
+                                .build())
+                .collect(Collectors.toList());
     }
 }

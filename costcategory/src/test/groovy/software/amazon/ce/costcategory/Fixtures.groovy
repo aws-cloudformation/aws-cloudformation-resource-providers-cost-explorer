@@ -10,6 +10,7 @@ import software.amazon.awssdk.services.costexplorer.model.CostCategoryValues
 import software.amazon.awssdk.services.costexplorer.model.DimensionValues
 import software.amazon.awssdk.services.costexplorer.model.Expression
 import software.amazon.awssdk.services.costexplorer.model.MatchOption
+import software.amazon.awssdk.services.costexplorer.model.ResourceTag
 import software.amazon.awssdk.services.costexplorer.model.TagValues
 
 class Fixtures {
@@ -203,4 +204,21 @@ class Fixtures {
     "Values" : [ "80", "20" ]
   } ]
 }''';
+
+    static final List<software.amazon.ce.costcategory.ResourceTag> CFN_RESOURCE_TAGS = [
+        software.amazon.ce.costcategory.ResourceTag.builder().key("Key1").value("Value1").build(),
+        software.amazon.ce.costcategory.ResourceTag.builder().key("Key2").value("Value2").build()
+    ]
+
+    static final List<ResourceTag> SDK_RESOURCE_TAGS = List.of(
+        ResourceTag.builder().key("Key1").value("Value1").build(),
+        ResourceTag.builder().key("Key2").value("Value2").build()
+    )
+
+    static final Map<String, String> RESOURCE_TAGS_MAP = [
+        "Key1": "Value1",
+        "Key2": "Value2",
+    ]
+
+    static final String ERROR_MESSAGE_CC_ALREADY_EXISTS = "Failed to create Cost Category: Cost category name CCName already exists"
 }

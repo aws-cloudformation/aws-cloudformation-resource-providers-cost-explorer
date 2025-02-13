@@ -6,9 +6,11 @@ import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDe
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
 import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.HandlerErrorCode;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ProxyClient;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 /**
@@ -33,27 +35,41 @@ public class ReadHandler extends CostCategoryBaseHandler {
         final Logger logger) {
 
         final ResourceModel model = request.getDesiredResourceState();
+        final ProxyClient<CostExplorerClient> proxyClient = proxy.newProxy(() -> costExplorerClient);
 
-        try {
-            DescribeCostCategoryDefinitionResponse response = proxy.injectCredentialsAndInvokeV2(
-                    CostCategoryRequestBuilder.buildDescribeRequest(model),
-                    costExplorerClient::describeCostCategoryDefinition
+        return ProgressEvent.progress(model, callbackContext)
+            .then(progress -> proxy.initiate("AWS-CE-CostCategory::Read", proxyClient, progress.getResourceModel(), progress.getCallbackContext())
+                .translateToServiceRequest(CostCategoryRequestBuilder::buildDescribeRequest)
+                .makeServiceCall((awsRequest, client) -> client.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeCostCategoryDefinition))
+                .handleError((awsRequest, exception, client, resourceModel, context) -> {
+                    if (exception instanceof ResourceNotFoundException) {
+                        return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                                .resourceModel(resourceModel)
+                                .status(OperationStatus.FAILED)
+                                .errorCode(HandlerErrorCode.NotFound)
+                                .build();
+                    }
+                    throw exception;
+                })
+                .done(response -> {
+                    CostCategory costCategory = response.costCategory();
+                    model.setName(costCategory.name());
+                    model.setEffectiveStart(costCategory.effectiveStart());
+                    model.setRuleVersion(costCategory.ruleVersionAsString());
+                    model.setRules(CostCategoryParser.costCategoryRulesToJson(costCategory.rules()));
+                    model.setSplitChargeRules(CostCategoryParser.costCategorySplitChargeRulesToJson(costCategory));
+                    model.setDefaultValue(costCategory.defaultValue());
+
+                    return ProgressEvent.progress(model, callbackContext);
+                })
+            )
+            .then(progress -> proxy.initiate("AWS-CE-CostCategory::ListTags", proxyClient, progress.getResourceModel(), progress.getCallbackContext())
+                .translateToServiceRequest(CostCategoryRequestBuilder::buildListTagsForResourceRequest)
+                .makeServiceCall((awsRequest, client) -> client.injectCredentialsAndInvokeV2(awsRequest, client.client()::listTagsForResource))
+                .done(response -> {
+                    model.setResourceTags(CostCategoryParser.toCFNResourceTags(response.resourceTags()));
+                    return ProgressEvent.defaultSuccessHandler(model);
+                })
             );
-
-            CostCategory costCategory = response.costCategory();
-            model.setName(costCategory.name());
-            model.setEffectiveStart(costCategory.effectiveStart());
-            model.setRuleVersion(costCategory.ruleVersionAsString());
-            model.setRules(CostCategoryParser.costCategoryRulesToJson(costCategory.rules()));
-            model.setSplitChargeRules(CostCategoryParser.costCategorySplitChargeRulesToJson(costCategory));
-            model.setDefaultValue(costCategory.defaultValue());
-
-            return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                    .resourceModel(model)
-                    .status(OperationStatus.SUCCESS)
-                    .build();
-        } catch (ResourceNotFoundException ex) {
-            throw new CfnNotFoundException(ex);
-        }
     }
 }
