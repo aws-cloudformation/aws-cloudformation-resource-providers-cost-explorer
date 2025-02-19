@@ -36,6 +36,7 @@ Resources:
                 - "ce:ListCostCategoryDefinitions"
                 - "ce:ListTagsForResource"
                 - "ce:TagResource"
+                - "ce:UntagResource"
                 - "ce:UpdateCostCategoryDefinition"
                 Resource: "*"
 Outputs:

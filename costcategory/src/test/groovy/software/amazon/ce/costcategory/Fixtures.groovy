@@ -210,6 +210,11 @@ class Fixtures {
         software.amazon.ce.costcategory.ResourceTag.builder().key("Key2").value("Value2").build()
     ]
 
+    static final List<software.amazon.ce.costcategory.ResourceTag> NEW_CFN_RESOURCE_TAGS = [
+            software.amazon.ce.costcategory.ResourceTag.builder().key("Key1").value("Value1").build(),
+            software.amazon.ce.costcategory.ResourceTag.builder().key("Key3").value("Value3").build()
+    ]
+
     static final List<ResourceTag> SDK_RESOURCE_TAGS = List.of(
         ResourceTag.builder().key("Key1").value("Value1").build(),
         ResourceTag.builder().key("Key2").value("Value2").build()

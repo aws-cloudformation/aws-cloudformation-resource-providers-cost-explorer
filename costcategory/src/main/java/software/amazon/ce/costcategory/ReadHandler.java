@@ -41,10 +41,10 @@ public class ReadHandler extends CostCategoryBaseHandler {
             .then(progress -> proxy.initiate("AWS-CE-CostCategory::Read", proxyClient, progress.getResourceModel(), progress.getCallbackContext())
                 .translateToServiceRequest(CostCategoryRequestBuilder::buildDescribeRequest)
                 .makeServiceCall((awsRequest, client) -> client.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeCostCategoryDefinition))
-                .handleError((awsRequest, exception, client, resourceModel, context) -> {
+                .handleError((awsRequest, exception, client, _model, context) -> {
                     if (exception instanceof ResourceNotFoundException) {
                         return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                                .resourceModel(resourceModel)
+                                .resourceModel(_model)
                                 .status(OperationStatus.FAILED)
                                 .errorCode(HandlerErrorCode.NotFound)
                                 .build();

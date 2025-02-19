@@ -6,30 +6,14 @@ import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDe
 import software.amazon.awssdk.services.costexplorer.model.ListTagsForResourceRequest
 import software.amazon.awssdk.services.costexplorer.model.ListTagsForResourceResponse
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException
-import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy
 import software.amazon.cloudformation.proxy.HandlerErrorCode
-import software.amazon.cloudformation.proxy.LoggerProxy
 import software.amazon.cloudformation.proxy.OperationStatus
-
-import java.time.Duration
 
 import static software.amazon.ce.costcategory.Fixtures.*
 
 class ReadHandlerTest extends HandlerSpecification {
 
     def handler = new ReadHandler(ceClient)
-
-    void setup() {
-        proxy = Spy(new AmazonWebServicesClientProxy(
-                new LoggerProxy(),
-                MOCK_CREDENTIALS,
-                () -> Duration.ofSeconds(600).toMillis()))
-
-        proxyClient.injectCredentialsAndInvokeV2(*_) >> { newRequest, requestFunction ->
-            proxy.injectCredentialsAndInvokeV2(newRequest, requestFunction)
-        }
-        proxyClient.client() >> ceClient
-    }
 
     def "Test: ReadHandler.handleRequest"() {
         given:
@@ -54,7 +38,7 @@ class ReadHandlerTest extends HandlerSpecification {
             .build()
 
         when:
-        def event = handler.handleRequest(proxy, request, new CallbackContext(), logger)
+        def event = handler.handleRequest(proxy, request, callbackContext, logger)
 
         then:
         1 * request.getDesiredResourceState() >> model
@@ -87,7 +71,7 @@ class ReadHandlerTest extends HandlerSpecification {
                 .build()
 
         when:
-        def event = handler.handleRequest(proxy, request, new CallbackContext(), logger)
+        def event = handler.handleRequest(proxy, request, callbackContext, logger)
 
         then:
         1 * request.getDesiredResourceState() >> model
