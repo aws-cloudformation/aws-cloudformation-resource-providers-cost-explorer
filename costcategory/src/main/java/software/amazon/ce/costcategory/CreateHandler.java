@@ -27,6 +27,7 @@ public class CreateHandler extends CostCategoryBaseHandler {
         super(costExplorerClient);
     }
 
+    @Override
     public ProgressEvent<ResourceModel, CallbackContext> handleRequest(
         final AmazonWebServicesClientProxy proxy,
         final ResourceHandlerRequest<ResourceModel> request,
