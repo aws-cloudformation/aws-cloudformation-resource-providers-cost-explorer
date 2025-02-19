@@ -6,6 +6,11 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.utils.AttributeMap;
 import software.amazon.awssdk.utils.ImmutableMap;
+import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
+import software.amazon.cloudformation.proxy.Logger;
+import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ProxyClient;
+import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.time.Duration;
 import java.util.Map;
@@ -24,6 +29,7 @@ public abstract class CostCategoryBaseHandler extends BaseHandler<CallbackContex
     private static final Duration HTTP_READ_TIMEOUT = Duration.ofSeconds(65);
 
     protected final CostExplorerClient costExplorerClient;
+    protected ProxyClient<CostExplorerClient> proxyClient;
 
     // Cost Categories is global in partition. Thus, in order to choose the global region when constructing the client,
     // we need to have this map from partition to global region
@@ -47,4 +53,27 @@ public abstract class CostCategoryBaseHandler extends BaseHandler<CallbackContex
     public CostCategoryBaseHandler(CostExplorerClient costExplorerClient) {
         this.costExplorerClient = costExplorerClient;
     }
+
+    @Override
+    public final ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+        final AmazonWebServicesClientProxy proxy,
+        final ResourceHandlerRequest<ResourceModel> request,
+        final CallbackContext callbackContext,
+        final Logger logger) {
+        proxyClient = proxy.newProxy(() -> costExplorerClient);
+        return handleRequest(
+            proxy,
+            request,
+            callbackContext != null ? callbackContext : new CallbackContext(),
+            proxyClient,
+            logger
+        );
+    }
+
+    protected abstract ProgressEvent<ResourceModel, CallbackContext> handleRequest(
+        final AmazonWebServicesClientProxy proxy,
+        final ResourceHandlerRequest<ResourceModel> request,
+        final CallbackContext callbackContext,
+        final ProxyClient<CostExplorerClient> proxyClient,
+        final Logger logger);
 }

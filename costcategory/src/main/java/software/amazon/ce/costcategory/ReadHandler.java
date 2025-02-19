@@ -2,9 +2,7 @@ package software.amazon.ce.costcategory;
 
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CostCategory;
-import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionResponse;
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException;
-import software.amazon.cloudformation.exceptions.CfnNotFoundException;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.HandlerErrorCode;
 import software.amazon.cloudformation.proxy.Logger;
@@ -32,13 +30,13 @@ public class ReadHandler extends CostCategoryBaseHandler {
         final AmazonWebServicesClientProxy proxy,
         final ResourceHandlerRequest<ResourceModel> request,
         final CallbackContext callbackContext,
+        final ProxyClient<CostExplorerClient> proxyClient,
         final Logger logger) {
 
         final ResourceModel model = request.getDesiredResourceState();
-        final ProxyClient<CostExplorerClient> proxyClient = proxy.newProxy(() -> costExplorerClient);
 
         return ProgressEvent.progress(model, callbackContext)
-            .then(progress -> proxy.initiate("AWS-CE-CostCategory::Read", proxyClient, progress.getResourceModel(), progress.getCallbackContext())
+            .then(progress -> proxy.initiate("AWS-CE-CostCategory::Read", proxyClient, model, callbackContext)
                 .translateToServiceRequest(CostCategoryRequestBuilder::buildDescribeRequest)
                 .makeServiceCall((awsRequest, client) -> client.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeCostCategoryDefinition))
                 .handleError((awsRequest, exception, client, _model, context) -> {
