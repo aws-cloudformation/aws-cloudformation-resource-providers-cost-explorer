@@ -1,5 +1,7 @@
 package software.amazon.ce.costcategory
 
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails
+import software.amazon.awssdk.awscore.exception.AwsServiceException
 import software.amazon.awssdk.services.costexplorer.model.CostCategory
 import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionRequest
 import software.amazon.awssdk.services.costexplorer.model.DescribeCostCategoryDefinitionResponse
@@ -58,7 +60,7 @@ class ReadHandlerTest extends HandlerSpecification {
         model.rules == "[ ${JSON_RULE_DIMENSION} ]"
         model.splitChargeRules == "[ ${JSON_SPLIT_CHARGE_RULE_EVEN} ]"
         model.defaultValue == COST_CATEGORY_DEFAULT_VALUE
-        model.resourceTags as Set == CFN_RESOURCE_TAGS as Set
+        model.tags as Set == CFN_RESOURCE_TAGS as Set
 
         event.resourceModel == model
         event.status == OperationStatus.SUCCESS
@@ -77,10 +79,49 @@ class ReadHandlerTest extends HandlerSpecification {
         1 * request.getDesiredResourceState() >> model
         1 * ceClient.describeCostCategoryDefinition(*_) >> { DescribeCostCategoryDefinitionRequest request ->
             assert request.costCategoryArn() == model.arn
-            throw ResourceNotFoundException.builder().build()
+            throw ResourceNotFoundException.builder().message("error").build()
         }
 
         event.getStatus() == OperationStatus.FAILED
         event.getErrorCode() == HandlerErrorCode.NotFound
+    }
+
+    def "Test: ReadHandler.AccessDenied"() {
+        given:
+        def model = ResourceModel.builder()
+                .arn(COST_CATEGORY_ARN)
+                .build()
+
+        def describeResponse = DescribeCostCategoryDefinitionResponse.builder()
+                .costCategory(CostCategory.builder()
+                        .costCategoryArn(COST_CATEGORY_ARN)
+                        .name(COST_CATEGORY_NAME)
+                        .effectiveStart(COST_CATEGORY_EFFECTIVE_START)
+                        .ruleVersion(RULE_VERSION)
+                        .rules([ RULE_DIMENSION ])
+                        .splitChargeRules([ SPLIT_CHARGE_RULE_EVEN ])
+                        .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
+                        .build()
+                ).build()
+
+        when:
+        def event = handler.handleRequest(proxy, request, callbackContext, logger)
+
+        then:
+        1 * request.getDesiredResourceState() >> model
+        1 * ceClient.describeCostCategoryDefinition(*_) >> { DescribeCostCategoryDefinitionRequest request ->
+            assert request.costCategoryArn() == model.arn
+            describeResponse
+        }
+        1 * ceClient.listTagsForResource(*_) >> { ListTagsForResourceRequest request ->
+            assert request.resourceArn() == model.arn
+            throw AwsServiceException.builder()
+                    .awsErrorDetails(
+                            AwsErrorDetails.builder().errorMessage("error").errorCode("AccessDeniedException").build())
+                    .build()
+        }
+
+        event.getStatus() == OperationStatus.FAILED
+        event.getErrorCode() == HandlerErrorCode.AccessDenied
     }
 }

@@ -1,10 +1,8 @@
 package software.amazon.ce.costcategory;
 
-import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.services.costexplorer.CostExplorerClient;
 import software.amazon.awssdk.services.costexplorer.model.CreateCostCategoryDefinitionResponse;
 import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
-import software.amazon.cloudformation.proxy.HandlerErrorCode;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
@@ -16,8 +14,7 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
  */
 public class CreateHandler extends CostCategoryBaseHandler {
 
-    public static final String COST_CATEGORY_ALREADY_EXISTS_PATTERN
-            = "^Failed to create Cost Category: Cost category name .* already exists";
+
 
     public CreateHandler() {
         super();
@@ -45,19 +42,7 @@ public class CreateHandler extends CostCategoryBaseHandler {
             model.setArn(response.costCategoryArn());
             model.setEffectiveStart(response.effectiveStart());
         } catch (Exception e) {
-            if (e instanceof AwsServiceException) {
-                String errorMessage = ((AwsServiceException) e).awsErrorDetails().errorMessage();
-                // if duplicated cost category, return an AlreadyExists exception per CFN contract test
-                if (errorMessage.matches(COST_CATEGORY_ALREADY_EXISTS_PATTERN)) {
-                    return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                            .resourceModel(model)
-                            .status(OperationStatus.FAILED)
-                            .errorCode(HandlerErrorCode.AlreadyExists)
-                            .build();
-                }
-                throw e;
-            }
-            throw e;
+            return handleError(e, model, callbackContext);
         }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()

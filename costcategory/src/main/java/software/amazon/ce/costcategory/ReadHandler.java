@@ -39,16 +39,7 @@ public class ReadHandler extends CostCategoryBaseHandler {
             .then(progress -> proxy.initiate("AWS-CE-CostCategory::Read", proxyClient, model, callbackContext)
                 .translateToServiceRequest(CostCategoryRequestBuilder::buildDescribeRequest)
                 .makeServiceCall((awsRequest, client) -> client.injectCredentialsAndInvokeV2(awsRequest, client.client()::describeCostCategoryDefinition))
-                .handleError((awsRequest, exception, client, _model, context) -> {
-                    if (exception instanceof ResourceNotFoundException) {
-                        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                                .resourceModel(_model)
-                                .status(OperationStatus.FAILED)
-                                .errorCode(HandlerErrorCode.NotFound)
-                                .build();
-                    }
-                    throw exception;
-                })
+                .handleError((awsRequest, exception, client, _model, context) -> handleError(exception, _model, context))
                 .done(response -> {
                     CostCategory costCategory = response.costCategory();
                     model.setName(costCategory.name());
@@ -64,8 +55,9 @@ public class ReadHandler extends CostCategoryBaseHandler {
             .then(progress -> proxy.initiate("AWS-CE-CostCategory::ListTags", proxyClient, progress.getResourceModel(), progress.getCallbackContext())
                 .translateToServiceRequest(CostCategoryRequestBuilder::buildListTagsForResourceRequest)
                 .makeServiceCall((awsRequest, client) -> client.injectCredentialsAndInvokeV2(awsRequest, client.client()::listTagsForResource))
+                .handleError((awsRequest, exception, client, _model, context) -> handleError(exception, _model, context))
                 .done(response -> {
-                    model.setResourceTags(CostCategoryParser.toCFNResourceTags(response.resourceTags()));
+                    model.setTags(CostCategoryParser.toCFNResourceTags(response.resourceTags()));
                     return ProgressEvent.defaultSuccessHandler(model);
                 })
             );

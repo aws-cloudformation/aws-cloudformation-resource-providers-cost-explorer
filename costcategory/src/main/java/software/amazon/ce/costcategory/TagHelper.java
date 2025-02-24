@@ -59,7 +59,7 @@ public class TagHelper {
         }
 
         // Resource tags
-        tagMap.putAll(convertToMap(handlerRequest.getDesiredResourceState().getResourceTags()));
+        tagMap.putAll(convertToMap(handlerRequest.getDesiredResourceState().getTags()));
 
         return Collections.unmodifiableMap(tagMap);
     }
@@ -86,7 +86,7 @@ public class TagHelper {
         final Map<String, String> previousTags = handlerRequest.getPreviousResourceTags() != null ?
                 handlerRequest.getPreviousResourceTags() : new HashMap<>();
 
-        previousTags.putAll(convertToMap(handlerRequest.getPreviousResourceState().getResourceTags()));
+        previousTags.putAll(convertToMap(handlerRequest.getPreviousResourceState().getTags()));
         return previousTags;
     }
 
@@ -100,7 +100,7 @@ public class TagHelper {
         final Map<String, String> desiredTags = handlerRequest.getDesiredResourceTags() != null ?
                 handlerRequest.getDesiredResourceTags() : new HashMap<>();
 
-        desiredTags.putAll(convertToMap(resourceModel.getResourceTags()));
+        desiredTags.putAll(convertToMap(resourceModel.getTags()));
         return desiredTags;
     }
 

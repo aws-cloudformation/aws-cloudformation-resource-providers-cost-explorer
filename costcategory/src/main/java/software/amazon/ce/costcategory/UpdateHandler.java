@@ -40,16 +40,7 @@ public class UpdateHandler extends CostCategoryBaseHandler {
             .then(progress -> proxy.initiate("AWS-CE-CostCategory::Update", proxyClient, model, callbackContext)
                 .translateToServiceRequest(CostCategoryRequestBuilder::buildUpdateRequest)
                 .makeServiceCall((awsRequest, client) -> client.injectCredentialsAndInvokeV2(awsRequest, client.client()::updateCostCategoryDefinition))
-                .handleError((awsRequest, exception, client, _model, context) -> {
-                    if (exception instanceof ResourceNotFoundException) {
-                        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                            .resourceModel(_model)
-                            .status(OperationStatus.FAILED)
-                            .errorCode(HandlerErrorCode.NotFound)
-                            .build();
-                    }
-                    throw exception;
-                })
+                .handleError((awsRequest, exception, client, _model, context) -> handleError(exception, _model, context))
                 .progress()
             )
             .then(progress -> {
@@ -67,7 +58,7 @@ public class UpdateHandler extends CostCategoryBaseHandler {
                         proxy.injectCredentialsAndInvokeV2(CostCategoryRequestBuilder.buildTagResourceRequest(progress.getResourceModel(), tagsToAdd), costExplorerClient::tagResource);
                     }
                 } catch (Exception e) {
-                    return ProgressEvent.failed(progress.getResourceModel(), progress.getCallbackContext(), HandlerErrorCode.GeneralServiceException, e.getMessage());
+                    return handleError(e, model, callbackContext);
                 }
                 return ProgressEvent.defaultSuccessHandler(progress.getResourceModel());
               }

@@ -1,5 +1,7 @@
 package software.amazon.ce.costcategory
 
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails
+import software.amazon.awssdk.awscore.exception.AwsServiceException
 import software.amazon.awssdk.services.cloudwatch.model.TagResourceResponse
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException
 import software.amazon.awssdk.services.costexplorer.model.TagResourceRequest
@@ -38,7 +40,7 @@ class UpdateHandlerTest extends HandlerSpecification {
         then:
         1 * request.getDesiredResourceState() >> model
         1 * request.getPreviousResourceState() >> Mock(ResourceModel) { it ->
-            it.getResourceTags() >> []
+            it.getTags() >> []
         }
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { UpdateCostCategoryDefinitionRequest updateRequest, _ ->
             assert updateRequest.costCategoryArn() == COST_CATEGORY_ARN
@@ -71,7 +73,7 @@ class UpdateHandlerTest extends HandlerSpecification {
                 .rules("[ ${JSON_RULE_DIMENSION} ]")
                 .splitChargeRules("[${JSON_SPLIT_CHARGE_RULE_FIXED}, ${JSON_SPLIT_CHARGE_RULE_PROPORTIONAL}, ${JSON_SPLIT_CHARGE_RULE_EVEN}]")
                 .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
-                .resourceTags(NEW_CFN_RESOURCE_TAGS)
+                .tags(NEW_CFN_RESOURCE_TAGS)
                 .build()
 
         when:
@@ -80,7 +82,7 @@ class UpdateHandlerTest extends HandlerSpecification {
         then:
         1 * request.getDesiredResourceState() >> model
         1 * request.getPreviousResourceState() >> Mock(ResourceModel) { it ->
-            it.getResourceTags() >> CFN_RESOURCE_TAGS
+            it.getTags() >> CFN_RESOURCE_TAGS
         }
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { UpdateCostCategoryDefinitionRequest updateRequest, _ ->
             assert updateRequest.costCategoryArn() == COST_CATEGORY_ARN
@@ -132,7 +134,7 @@ class UpdateHandlerTest extends HandlerSpecification {
             assert updateRequest.splitChargeRules() == [SPLIT_CHARGE_RULE_FIXED, SPLIT_CHARGE_RULE_PROPORTIONAL, SPLIT_CHARGE_RULE_EVEN]
             assert updateRequest.defaultValue() == COST_CATEGORY_DEFAULT_VALUE
 
-            throw ResourceNotFoundException.builder().build()
+            throw ResourceNotFoundException.builder().message("error").build()
         }
 
         event.status == OperationStatus.FAILED
@@ -140,7 +142,7 @@ class UpdateHandlerTest extends HandlerSpecification {
     }
 
 
-    def "Test: handleRequest exception during tagging"() {
+    def "Test: handleRequest.AccessDenied for tagging"() {
         given:
         def updateResponse = UpdateCostCategoryDefinitionResponse.builder()
                 .costCategoryArn(COST_CATEGORY_ARN)
@@ -154,7 +156,7 @@ class UpdateHandlerTest extends HandlerSpecification {
                 .rules("[ ${JSON_RULE_DIMENSION} ]")
                 .splitChargeRules("[${JSON_SPLIT_CHARGE_RULE_FIXED}, ${JSON_SPLIT_CHARGE_RULE_PROPORTIONAL}, ${JSON_SPLIT_CHARGE_RULE_EVEN}]")
                 .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
-                .resourceTags(NEW_CFN_RESOURCE_TAGS)
+                .tags(NEW_CFN_RESOURCE_TAGS)
                 .build()
 
         when:
@@ -163,7 +165,7 @@ class UpdateHandlerTest extends HandlerSpecification {
         then:
         1 * request.getDesiredResourceState() >> model
         1 * request.getPreviousResourceState() >> Mock(ResourceModel) { it ->
-            it.getResourceTags() >> CFN_RESOURCE_TAGS
+            it.getTags() >> CFN_RESOURCE_TAGS
         }
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { UpdateCostCategoryDefinitionRequest updateRequest, _ ->
             assert updateRequest.costCategoryArn() == COST_CATEGORY_ARN
@@ -178,10 +180,13 @@ class UpdateHandlerTest extends HandlerSpecification {
             assert untagRequest.resourceArn() == COST_CATEGORY_ARN
             assert untagRequest.resourceTagKeys() == ["Key2"]
 
-            throw new Exception()
+            throw AwsServiceException.builder()
+                    .awsErrorDetails(
+                            AwsErrorDetails.builder().errorMessage("error").errorCode("AccessDeniedException").build())
+                    .build()
         }
 
         event.status == OperationStatus.FAILED
-        event.errorCode == HandlerErrorCode.GeneralServiceException
+        event.errorCode == HandlerErrorCode.AccessDenied
     }
 }
