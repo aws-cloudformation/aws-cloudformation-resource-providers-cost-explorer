@@ -4,6 +4,7 @@ import software.amazon.awssdk.awscore.exception.AwsErrorDetails
 import software.amazon.awssdk.awscore.exception.AwsServiceException
 import software.amazon.awssdk.services.costexplorer.model.CreateCostCategoryDefinitionRequest
 import software.amazon.awssdk.services.costexplorer.model.CreateCostCategoryDefinitionResponse
+import software.amazon.awssdk.services.costexplorer.model.ListCostCategoryDefinitionsRequest
 import software.amazon.cloudformation.proxy.HandlerErrorCode
 import software.amazon.cloudformation.proxy.OperationStatus
 
@@ -34,6 +35,7 @@ class CreateHandlerTest extends HandlerSpecification {
 
         then:
         2 * request.getDesiredResourceState() >> model
+        1 * request.getSystemTags() >> null
         request.getDesiredResourceTags() >> RESOURCE_TAGS_MAP
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { CreateCostCategoryDefinitionRequest createRequest, _ ->
             assert createRequest.name() == model.name
@@ -103,5 +105,37 @@ class CreateHandlerTest extends HandlerSpecification {
         }
         event.getStatus() == OperationStatus.FAILED
         event.getErrorCode() == HandlerErrorCode.AccessDenied
+    }
+
+
+
+    def "Test: handleRequest handles unhandled exceptions"() {
+        given:
+        def model = ResourceModel.builder()
+                .name(COST_CATEGORY_NAME)
+                .ruleVersion(RULE_VERSION)
+                .rules("[ ${JSON_RULE_DIMENSION}, ${JSON_RULE_INHERITED_VALUE} ]")
+                .splitChargeRules("[${JSON_SPLIT_CHARGE_RULE_FIXED}, ${JSON_SPLIT_CHARGE_RULE_PROPORTIONAL}, ${JSON_SPLIT_CHARGE_RULE_EVEN}]")
+                .defaultValue(COST_CATEGORY_DEFAULT_VALUE)
+                .build()
+
+        when:
+        def event = handler.handleRequest(proxy, request, callbackContext, logger)
+
+        then:
+        2 * request.getDesiredResourceState() >> model
+
+        1 * proxy.injectCredentialsAndInvokeV2(*_) >> {
+            throw exception
+        }
+
+        event.status == OperationStatus.FAILED
+        event.errorCode == HandlerErrorCode.GeneralServiceException
+
+        where:
+        exception << [
+                new Exception(),
+                AwsServiceException.builder().message("random error").build()
+        ]
     }
 }

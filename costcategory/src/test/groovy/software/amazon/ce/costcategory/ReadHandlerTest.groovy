@@ -66,7 +66,7 @@ class ReadHandlerTest extends HandlerSpecification {
         event.status == OperationStatus.SUCCESS
     }
 
-    def "Test: ReadHandler.ResourceNotFound"() {
+    def "Test: ReadHandler throws NotFound when ResourceNotFoundException"() {
         given:
         def model = ResourceModel.builder()
                 .arn(COST_CATEGORY_ARN)
@@ -86,7 +86,7 @@ class ReadHandlerTest extends HandlerSpecification {
         event.getErrorCode() == HandlerErrorCode.NotFound
     }
 
-    def "Test: ReadHandler.AccessDenied"() {
+    def "Test: ReadHandler throws AccessDenied when AccessDeniedException"() {
         given:
         def model = ResourceModel.builder()
                 .arn(COST_CATEGORY_ARN)

@@ -84,6 +84,8 @@ class UpdateHandlerTest extends HandlerSpecification {
         1 * request.getPreviousResourceState() >> Mock(ResourceModel) { it ->
             it.getTags() >> CFN_RESOURCE_TAGS
         }
+        1 * request.getPreviousResourceTags() >> null
+        1 * request.getDesiredResourceTags() >> null
         1 * proxy.injectCredentialsAndInvokeV2(*_) >> { UpdateCostCategoryDefinitionRequest updateRequest, _ ->
             assert updateRequest.costCategoryArn() == COST_CATEGORY_ARN
             assert updateRequest.ruleVersionAsString() == RULE_VERSION
@@ -110,7 +112,7 @@ class UpdateHandlerTest extends HandlerSpecification {
         event.resourceModel == model
     }
 
-    def "Test: handleRequest ResourceNotFound"() {
+    def "Test: handleRequest throws NotFound when ResourceNotFound"() {
         given:
         def model = ResourceModel.builder()
                 .arn(COST_CATEGORY_ARN)
@@ -142,7 +144,7 @@ class UpdateHandlerTest extends HandlerSpecification {
     }
 
 
-    def "Test: handleRequest.AccessDenied for tagging"() {
+    def "Test: handleRequest throws AccessDenied when missing tagging permissions"() {
         given:
         def updateResponse = UpdateCostCategoryDefinitionResponse.builder()
                 .costCategoryArn(COST_CATEGORY_ARN)

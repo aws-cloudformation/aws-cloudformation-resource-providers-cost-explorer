@@ -65,17 +65,6 @@ public class TagHelper {
     }
 
     /**
-     * shouldUpdateTags
-     *
-     * Determines whether user defined tags have been changed during update.
-     */
-    public static boolean shouldUpdateTags(final ResourceModel resourceModel, final ResourceHandlerRequest<ResourceModel> handlerRequest) {
-        final Map<String, String> previousTags = getPreviouslyAttachedTags(handlerRequest);
-        final Map<String, String> desiredTags = getNewDesiredTags(resourceModel, handlerRequest);
-        return ObjectUtils.notEqual(previousTags, desiredTags);
-    }
-
-    /**
      * getPreviouslyAttachedTags
      *
      * If stack tags and resource tags are not merged together in Configuration class,
