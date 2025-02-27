@@ -3,6 +3,7 @@ package software.amazon.ce.costcategory
 import software.amazon.awssdk.services.costexplorer.model.CostCategoryReference
 import software.amazon.awssdk.services.costexplorer.model.ListCostCategoryDefinitionsRequest
 import software.amazon.awssdk.services.costexplorer.model.ListCostCategoryDefinitionsResponse
+import software.amazon.cloudformation.proxy.HandlerErrorCode
 import software.amazon.cloudformation.proxy.OperationStatus
 
 import static software.amazon.ce.costcategory.Fixtures.*

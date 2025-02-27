@@ -6,6 +6,7 @@ import software.amazon.cloudformation.proxy.AmazonWebServicesClientProxy;
 import software.amazon.cloudformation.proxy.Logger;
 import software.amazon.cloudformation.proxy.OperationStatus;
 import software.amazon.cloudformation.proxy.ProgressEvent;
+import software.amazon.cloudformation.proxy.ProxyClient;
 import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class ListHandler extends CostCategoryBaseHandler {
         final AmazonWebServicesClientProxy proxy,
         final ResourceHandlerRequest<ResourceModel> request,
         final CallbackContext callbackContext,
+        final ProxyClient<CostExplorerClient> proxyClient,
         final Logger logger) {
 
         ListCostCategoryDefinitionsResponse response = proxy.injectCredentialsAndInvokeV2(

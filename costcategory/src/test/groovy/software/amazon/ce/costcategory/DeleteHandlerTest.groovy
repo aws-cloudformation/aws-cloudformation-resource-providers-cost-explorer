@@ -4,6 +4,7 @@ import software.amazon.awssdk.services.costexplorer.model.DeleteCostCategoryDefi
 import software.amazon.awssdk.services.costexplorer.model.DeleteCostCategoryDefinitionResponse
 import software.amazon.awssdk.services.costexplorer.model.ResourceNotFoundException
 import software.amazon.cloudformation.exceptions.CfnNotFoundException
+import software.amazon.cloudformation.proxy.HandlerErrorCode
 import software.amazon.cloudformation.proxy.OperationStatus
 
 import static software.amazon.ce.costcategory.Fixtures.*
@@ -39,14 +40,15 @@ class DeleteHandlerTest extends HandlerSpecification {
                 .arn(COST_CATEGORY_ARN)
                 .build()
         proxy.injectCredentialsAndInvokeV2(*_) >> { DeleteCostCategoryDefinitionRequest r, _ ->
-            throw ResourceNotFoundException.builder().build()
+            throw ResourceNotFoundException.builder().message("error").build()
         }
 
         when:
-        handler.handleRequest(proxy, request, callbackContext, logger)
+        def event = handler.handleRequest(proxy, request, callbackContext, logger)
 
         then:
         1 * request.getDesiredResourceState() >> model
-        thrown CfnNotFoundException
+        event.status == OperationStatus.FAILED
+        event.errorCode == HandlerErrorCode.NotFound
     }
 }

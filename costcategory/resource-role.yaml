@@ -34,6 +34,9 @@ Resources:
                 - "ce:DeleteCostCategoryDefinition"
                 - "ce:DescribeCostCategoryDefinition"
                 - "ce:ListCostCategoryDefinitions"
+                - "ce:ListTagsForResource"
+                - "ce:TagResource"
+                - "ce:UntagResource"
                 - "ce:UpdateCostCategoryDefinition"
                 Resource: "*"
 Outputs:
